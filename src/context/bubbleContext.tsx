@@ -7,7 +7,9 @@ export type BubbleData = {
     [id: string]: User
   },
   uniqueIds: Set<string>,
-  refresh: () => void
+  refresh: () => void,
+  nodes: any,
+  links: any
 }
 
 const initialData = {
@@ -19,6 +21,8 @@ export const BubbleContext = createContext<BubbleData>(null)
 
 export default function BubbleContextComp({ children }) {
   const [bubbleData, setBubbleData] = useState(initialData)
+  const [nodes, setNodes] = useState([])
+  const [links, setLinks] = useState([])
 
   const { user } = useUser()
 
@@ -40,13 +44,21 @@ export default function BubbleContextComp({ children }) {
 
       console.log(bubbleData)
       setBubbleData({ ...bubbleData });
+      setLinks(user.connectedUsers.map(connectedUser => ({
+        source: user.id,
+        target: connectedUser
+      })))
+      setNodes(Object.keys(bubbleData.usersData).map(userKey => ({
+        name: bubbleData.usersData[userKey].displayName, image: bubbleData.usersData[userKey].photoURL, id: bubbleData.usersData[userKey].id
+      })))
+
     })
   }
 
   useEffect(getBubbleData, [user]);
 
   return (
-    <BubbleContext.Provider value={{ ...bubbleData, refresh: getBubbleData }}>
+    <BubbleContext.Provider value={{ ...bubbleData, refresh: getBubbleData, nodes, links }}>
       {children}
     </BubbleContext.Provider>
   )

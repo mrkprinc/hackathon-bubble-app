@@ -3,7 +3,8 @@
     {
       "id": 1,
       "name": "Andy",
-      "image": "http://marvel-force-chart.surge.sh/marvel_force_chart_img/mystique.png"
+      "image": "http://marvel-force-chart.surge.sh/marvel_force_chart_img/mystique.png",
+      "isRoot": true
     },
     {
       "id": 2,
