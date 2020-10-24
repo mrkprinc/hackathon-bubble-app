@@ -4,7 +4,7 @@ import BaseLayout from "src/layouts/base-layout";
 import BubbleVisual from "src/components/bubbleVisual";
 import { useUser } from "src/context/userContext";
 import { useBubble } from "src/context/bubbleContext";
-import { ForceGraph } from 'src/components/force-graph'
+import { ForceGraph } from "src/components/force-graph";
 
 export default function Home() {
   // Our custom hook to get context values

@@ -13,7 +13,7 @@ const BaseLayout: React.FC<BaseLayoutProps> = ({ children }) => (
     </Head>
     <MainNav />
 
-    <Container className={styles.container}>{children}</Container>
+    <div className={styles.container}>{children}</div>
   </>
 );
 
