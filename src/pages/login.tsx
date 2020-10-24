@@ -1,21 +1,30 @@
-import { useState, useRef } from 'react'
-import { useUser } from 'src/context/userContext'
-import { useBubble } from 'src/context/bubbleContext'
-import authService from 'src/services/auth.service'
-import bubbleService from 'src/services/bubble.service';
-
+import { useState, useRef } from "react";
+import { useUser } from "src/context/userContext";
+import { useBubble } from "src/context/bubbleContext";
+import authService from "src/services/auth.service";
+import bubbleService from "src/services/bubble.service";
+import { Button, Card } from "reactstrap";
+import styles from "./login.module.scss";
 
 export default function TempLogin() {
-  const { loadingUser, user } = useUser();
-  const { usersData } = useBubble();
+  // const { loadingUser, user } = useUser();
+  // const { usersData } = useBubble();
 
-  const [emailInput, setEmailInput] = useState('');
+  // const [emailInput, setEmailInput] = useState("");
 
   return (
-    <div>
-      {loadingUser && <div>Loading user...</div>}
-
-      {user ? (
+    <div className={styles.container}>
+      <Card className={styles.card}>
+        <h2>Find out who is in your bubble</h2>
+        <h4>See how big your bubble truly is</h4>
+        <Button onClick={authService.signInWithGoogle} color="info">
+          Sign In With Google
+        </Button>
+        {/* {loadingUser && <div>Loading user...</div>} */}
+        {/* <button onClick={authService.signInWithGoogle}>
+        Sign In With Google
+      </button> */}
+        {/* {user ? (
         <>
           <div>User: {user.displayName}</div>
           <button onClick={authService.signOut}>Sign Out</button>
@@ -32,7 +41,8 @@ export default function TempLogin() {
         </>
       ) : (
         <button onClick={authService.signInWithGoogle}>Sign In With Google</button>
-      )}
+      )} */}
+      </Card>
     </div>
   );
 }

@@ -1,14 +1,12 @@
-import Head from "next/head";
-import MainNav from "src/components/nav/mainNav";
-import { Container } from "reactstrap";
+import { ReactNode } from "react";
 import styles from "./bubbleVisual.module.scss";
 
-type BubbleVisualProps = {};
+type BubbleVisualProps = {
+  children: ReactNode;
+};
 
 const BubbleVisual: React.FC<BubbleVisualProps> = ({ children }) => (
-  <div className={styles.container}>
-    {children}
-  </div>
+  <div className={styles.container}>{children}</div>
 );
 
 export default BubbleVisual;

@@ -5,8 +5,8 @@ import BubbleVisual from "src/components/bubbleVisual";
 import { useUser } from "src/context/userContext";
 import { useBubble } from "src/context/bubbleContext";
 
-import data from '../data/data.json'
-import { ForceGraph } from 'src/components/force-graph'
+import data from "../data/data.json";
+import { ForceGraph } from "src/components/force-graph";
 
 export default function Home() {
   // Our custom hook to get context values
@@ -20,16 +20,22 @@ export default function Home() {
     }
     if (bubbleData) {
       // You know that the user is loaded: either logged in or out!
-      console.log('bubbleData', bubbleData);
+      console.log("bubbleData", bubbleData);
     }
   }, [loadingUser, user, bubbleData]);
 
-  const hasArrayData = (d: Array<any>) => d && d.length > 0
+  const hasArrayData = (d: Array<any>) => d && d.length > 0;
 
   return (
     <BaseLayout>
       <BubbleVisual>
-        {hasArrayData(bubbleData.links) && hasArrayData(bubbleData.nodes) && <ForceGraph linksData={bubbleData.links as any} nodesData={bubbleData.nodes as any} />}
+        hello
+        {hasArrayData(bubbleData.links) && hasArrayData(bubbleData.nodes) && (
+          <ForceGraph
+            linksData={bubbleData.links as any}
+            nodesData={bubbleData.nodes as any}
+          />
+        )}
       </BubbleVisual>
     </BaseLayout>
   );
