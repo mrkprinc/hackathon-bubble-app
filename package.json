@@ -7,6 +7,8 @@
     "start": "next start"
   },
   "dependencies": {
+    "@fortawesome/fontawesome-free": "^5.13.0",
+    "d3": "^5.16.0",
     "firebase": "7.17.0",
     "next": "latest",
     "react": "^16.13.0",
