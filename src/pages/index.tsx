@@ -1,7 +1,7 @@
 import Head from "next/head";
 import { useEffect } from "react";
 import BaseLayout from "src/layouts/base-layout";
-import MyBubble from "src/components/myBubble";
+import BubbleVisual from "src/components/bubbleVisual";
 import { useUser } from "src/context/userContext";
 
 export default function Home() {
@@ -17,7 +17,7 @@ export default function Home() {
 
   return (
     <BaseLayout>
-      <MyBubble />
+      <BubbleVisual />
     </BaseLayout>
   );
 }
