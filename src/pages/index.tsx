@@ -8,6 +8,7 @@ import BubbleSummary from "src/components/bubble-summary/bubbleSummary";
 import { useUser } from "src/context/userContext";
 import { useBubble } from "src/context/bubbleContext";
 import { ForceGraph } from "src/components/force-graph";
+import notificationService from 'src/services/notifications.service'
 
 export default function Home() {
   // Our custom hook to get context values
@@ -18,9 +19,14 @@ export default function Home() {
     <>
       {user ? (
         <BaseLayout>
-          <Alert>
-            <>hello</>
-          </Alert>
+          {user.notifications?.map((notification, idx) => (
+            <Alert
+              key={idx}
+              notification={notification}
+              dismiss={() => notificationService.dismissNotification(user, notification)}
+            />
+          ))}
+
           <BubbleVisual>
             <ForceGraph
               linksData={bubbleData.edges}
