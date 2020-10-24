@@ -1,13 +1,14 @@
 import { useState, useEffect, createContext, useContext } from 'react'
 import firebase from 'src/firebase/clientApp'
+import Collections from 'src/firebase/collections.enum'
 
-type User = {
+export type User = {
   id: string
   displayName: string
   email: string
   photoURL: string
   createdAt?: firebase.firestore.Timestamp
-  userConnections?: string[]
+  connectedUsers?: string[]
 }
 
 export const UserContext = createContext<{ user: User, [funcs: string]: any }>(null)
@@ -23,15 +24,23 @@ export default function UserContextComp({ children }) {
         if (userProfile) {
           // User is signed in.
           const { uid, displayName, email, photoURL } = userProfile;
-          const userDoc = await firebase.firestore().doc(`users/${uid}`).get();
+          const userDoc = await firebase.firestore().doc(`${Collections.USERS}/${uid}`).get();
+          const nowStamp = firebase.firestore.Timestamp.now();
 
           if (userDoc.exists) {
+            userDoc.ref.update({ displayName, email, photoURL, updatedAt: nowStamp })
             setUser({ ...userDoc.data(), id: uid, displayName, email, photoURL })
           } else {
             // initialize user doc
-            const initialData = { userConnections: [], createdAt: firebase.firestore.Timestamp.now() }
+            const initialData = {
+              displayName,
+              email,
+              photoURL,
+              connectedUsers: [],
+              createdAt: nowStamp,
+            }
             userDoc.ref.set(initialData)
-            setUser({ ...initialData, id: uid, displayName, email, photoURL });
+            setUser({ ...initialData, id: uid });
           }
         } else {
           setUser(null);

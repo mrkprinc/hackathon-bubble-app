@@ -1,6 +1,7 @@
 import { useEffect } from 'react'
 import { useUser } from 'src/context/userContext'
 import authService from 'src/services/auth.service'
+import bubbleService from 'src/services/bubble.service';
 
 
 export default function TempLogin() {
@@ -20,6 +21,7 @@ export default function TempLogin() {
         <>
           <div>User: {user.displayName}</div>
           <button onClick={authService.signOut}>Sign Out</button>
+          <button onClick={() => bubbleService.getUserBubble(user)}>Log My Bubble</button>
         </>
       ) : (
         <button onClick={authService.signInWithGoogle}>Sign In With Google</button>
