@@ -1,10 +1,10 @@
-import { useState, useRef } from "react";
+import styles from "./login.module.scss";
+import { useState } from "react";
 import { useUser } from "src/context/userContext";
 import { useBubble } from "src/context/bubbleContext";
 import authService from "src/services/auth.service";
 import bubbleService from "src/services/bubble.service";
 import { Button, Card } from "reactstrap";
-import styles from "./login.module.scss";
 
 export default function TempLogin() {
   // const { loadingUser, user } = useUser();
