@@ -1,13 +1,14 @@
 import { useState, useEffect, createContext, useContext } from 'react'
 import firebase from 'src/firebase/clientApp'
+import Collections from 'src/firebase/collections.enum'
 
-type User = {
+export type User = {
   id: string
   displayName: string
   email: string
   photoURL: string
   createdAt?: firebase.firestore.Timestamp
-  userConnections?: string[]
+  connectedUsers?: string[]
 }
 
 export const UserContext = createContext<{ user: User, [funcs: string]: any }>(null)
@@ -17,22 +18,35 @@ export default function UserContextComp({ children }) {
   const [loadingUser, setLoadingUser] = useState(true)
 
   useEffect(() => {
-    // Listen authenticated user
-    const unsubscriber = firebase.auth().onAuthStateChanged(async (userProfile) => {
+    let userDataUnsubscriber;
+    const authUnsubscriber = firebase.auth().onAuthStateChanged(async (userProfile) => {
       try {
         if (userProfile) {
           // User is signed in.
           const { uid, displayName, email, photoURL } = userProfile;
-          const userDoc = await firebase.firestore().doc(`users/${uid}`).get();
+          const userDoc = await firebase.firestore().doc(`${Collections.USERS}/${uid}`).get();
+          const nowStamp = firebase.firestore.Timestamp.now();
 
           if (userDoc.exists) {
             setUser({ ...userDoc.data(), id: uid, displayName, email, photoURL })
+            await userDoc.ref.update({ displayName, email, photoURL, updatedAt: nowStamp })
           } else {
             // initialize user doc
-            const initialData = { userConnections: [], createdAt: firebase.firestore.Timestamp.now() }
-            userDoc.ref.set(initialData)
-            setUser({ ...initialData, id: uid, displayName, email, photoURL });
+            const initialData = {
+              displayName,
+              email,
+              photoURL,
+              connectedUsers: [],
+              createdAt: nowStamp,
+            }
+            setUser({ ...initialData, id: uid });
+            await userDoc.ref.set(initialData)
           }
+
+          userDataUnsubscriber = userDoc.ref.onSnapshot((doc) => {
+            console.log('Received updated user snapshot.')
+            setUser((prevState) => Object.assign({}, prevState, doc.data()))
+          })
         } else {
           setUser(null);
         }
@@ -43,8 +57,11 @@ export default function UserContextComp({ children }) {
       }
     })
 
-    // Unsubscribe auth listener on unmount
-    return () => unsubscriber()
+    // Unsubscribe on unmount
+    return () => {
+      authUnsubscriber();
+      userDataUnsubscriber?.();
+    }
   }, [])
 
   return (
@@ -54,5 +71,4 @@ export default function UserContextComp({ children }) {
   )
 }
 
-// Custom hook that shorthands the context!
 export const useUser = () => useContext(UserContext)
