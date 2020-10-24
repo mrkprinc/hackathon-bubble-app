@@ -71,5 +71,4 @@ export default function UserContextComp({ children }) {
   )
 }
 
-// Custom hook that shorthands the context!
 export const useUser = () => useContext(UserContext)
