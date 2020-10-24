@@ -4,6 +4,7 @@ import Alert from "src/components/alert/alert";
 import BaseLayout from "src/layouts/base-layout";
 import BubbleVisual from "src/components/bubbleVisual/bubbleVisual";
 import Login from "src/components/login/login";
+import BubbleSummary from "src/components/bubble-summary/bubbleSummary";
 import { useUser } from "src/context/userContext";
 import { useBubble } from "src/context/bubbleContext";
 import { ForceGraph } from "src/components/force-graph";
@@ -26,6 +27,8 @@ export default function Home() {
               nodesData={bubbleData.nodes}
             />
           </BubbleVisual>
+          <BubbleSummary title="Total of pepple in your close bubble" count={Object.keys(bubbleData.usersData).length} max={10}/>
+          <BubbleSummary title="Total of people in your bubble" count={bubbleData.nodes.length} max={10}/>
         </BaseLayout>
       ) : (
         <Login />
