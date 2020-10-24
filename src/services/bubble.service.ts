@@ -14,7 +14,6 @@ async function getConnectedUsers(user: User): Promise<User[]> {
     .get()
     .then((snapshot) => snapshot.docs.map((doc) => ({ id: doc.id, ...doc.data() } as User)))
 
-  console.log(connectedUsers);
   return connectedUsers;
 }
 

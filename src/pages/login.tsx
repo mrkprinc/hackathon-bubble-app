@@ -1,4 +1,4 @@
-import { useState, useRef } from 'react'
+import { useState } from 'react'
 import { useUser } from 'src/context/userContext'
 import { useBubble } from 'src/context/bubbleContext'
 import authService from 'src/services/auth.service'

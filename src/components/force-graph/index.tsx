@@ -31,7 +31,7 @@ export const ForceGraph: React.FC<ForceGraphProps> = ({ linksData, nodesData }) 
     }
 
     return destroyFn
-  }, [])
+  }, [linksData, nodesData])
 
   return <div ref={containerRef} className={styles.container} />
 }
