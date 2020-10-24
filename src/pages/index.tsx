@@ -24,10 +24,12 @@ export default function Home() {
     }
   }, [loadingUser, user, bubbleData]);
 
+  const hasArrayData = (d: Array<any>) => d && d.length > 0
+
   return (
     <BaseLayout>
       <BubbleVisual>
-        <ForceGraph linksData={bubbleData.links as any} nodesData={bubbleData.nodes as any} />
+        {hasArrayData(bubbleData.links) && hasArrayData(bubbleData.nodes) && <ForceGraph linksData={bubbleData.links as any} nodesData={bubbleData.nodes as any} />}
       </BubbleVisual>
     </BaseLayout>
   );
