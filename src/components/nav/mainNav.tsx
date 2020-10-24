@@ -11,7 +11,7 @@ import { faBars, faPlusCircle } from "@fortawesome/free-solid-svg-icons";
 import { useState } from "react";
 import authService from "src/services/auth.service";
 
-import AddToBubble from "src/components/addToBubble";
+import AddToBubble from "src/components/addToBubble/addToBubble";
 import styles from "./mainNav.module.scss";
 
 const MainNav: React.FC = () => {

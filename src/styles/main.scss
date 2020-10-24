@@ -10,6 +10,12 @@ body {
   box-sizing: border-box;
 }
 
+// Overwriting bootstrap ---------------------------------------------
+.alert {
+  margin-bottom: 0;
+  border-radius: 0;
+}
+
 // Fonts -------------------------------------------------------------
 @font-face {
   min-height: 100vh;
