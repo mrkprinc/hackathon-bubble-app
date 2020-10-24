@@ -18,8 +18,8 @@ export default function UserContextComp({ children }) {
   const [loadingUser, setLoadingUser] = useState(true)
 
   useEffect(() => {
-    // Listen authenticated user
-    const unsubscriber = firebase.auth().onAuthStateChanged(async (userProfile) => {
+    let userDataUnsubscriber;
+    const authUnsubscriber = firebase.auth().onAuthStateChanged(async (userProfile) => {
       try {
         if (userProfile) {
           // User is signed in.
@@ -28,8 +28,8 @@ export default function UserContextComp({ children }) {
           const nowStamp = firebase.firestore.Timestamp.now();
 
           if (userDoc.exists) {
-            userDoc.ref.update({ displayName, email, photoURL, updatedAt: nowStamp })
             setUser({ ...userDoc.data(), id: uid, displayName, email, photoURL })
+            await userDoc.ref.update({ displayName, email, photoURL, updatedAt: nowStamp })
           } else {
             // initialize user doc
             const initialData = {
@@ -39,9 +39,14 @@ export default function UserContextComp({ children }) {
               connectedUsers: [],
               createdAt: nowStamp,
             }
-            userDoc.ref.set(initialData)
             setUser({ ...initialData, id: uid });
+            await userDoc.ref.set(initialData)
           }
+
+          userDataUnsubscriber = userDoc.ref.onSnapshot((doc) => {
+            console.log('Received updated user snapshot.')
+            setUser((prevState) => Object.assign({}, prevState, doc.data()))
+          })
         } else {
           setUser(null);
         }
@@ -52,8 +57,11 @@ export default function UserContextComp({ children }) {
       }
     })
 
-    // Unsubscribe auth listener on unmount
-    return () => unsubscriber()
+    // Unsubscribe on unmount
+    return () => {
+      authUnsubscriber();
+      userDataUnsubscriber?.();
+    }
   }, [])
 
   return (
