@@ -15,7 +15,15 @@ function signInWithGoogle() {
     });
 }
 
-export default {
-  signInWithGoogle
+function signOut() {
+  const auth = firebase.auth();
+
+  auth.signOut()
+    .then(() => console.log("Signout successful."))
+    .catch((err) => console.error(err));
 }
 
+export default {
+  signInWithGoogle,
+  signOut,
+}

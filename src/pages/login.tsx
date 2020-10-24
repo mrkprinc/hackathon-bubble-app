@@ -13,6 +13,17 @@ export default function TempLogin() {
   }, [loadingUser, user])
 
   return (
-    <button onClick={authService.signInWithGoogle}>Sign In With Google</button>
+    <div>
+      {loadingUser && <div>Loading user...</div>}
+
+      {user ? (
+        <>
+          <div>User: {user.displayName}</div>
+          <button onClick={authService.signOut}>Sign Out</button>
+        </>
+      ) : (
+        <button onClick={authService.signInWithGoogle}>Sign In With Google</button>
+      )}
+    </div>
   );
 }
