@@ -3,52 +3,52 @@
     {
       "id": 1,
       "name": "Andy",
-      "image": "male"
+      "image": "http://marvel-force-chart.surge.sh/marvel_force_chart_img/mystique.png"
     },
     {
       "id": 2,
       "name": "Betty",
-      "image": "female"
+      "image": "http://marvel-force-chart.surge.sh/marvel_force_chart_img/top_spiderman.png"
     },
     {
       "id": 3,
       "name": "Cate",
-      "image": "female"
+      "image": "http://marvel-force-chart.surge.sh/marvel_force_chart_img/top_spiderman.png"
     },
     {
       "id": 4,
       "name": "Dave",
-      "image": "male"
+      "image": "http://marvel-force-chart.surge.sh/marvel_force_chart_img/mystique.png"
     },
     {
       "id": 5,
       "name": "Ellen",
-      "image": "female"
+      "image": "http://marvel-force-chart.surge.sh/marvel_force_chart_img/top_spiderman.png"
     },
     {
       "id": 6,
       "name": "Fiona",
-      "image": "female"
+      "image": "http://marvel-force-chart.surge.sh/marvel_force_chart_img/top_spiderman.png"
     },
     {
       "id": 7,
       "name": "Garry",
-      "image": "male"
+      "image": "http://marvel-force-chart.surge.sh/marvel_force_chart_img/mystique.png"
     },
     {
       "id": 8,
       "name": "Holly",
-      "image": "female"
+      "image": "http://marvel-force-chart.surge.sh/marvel_force_chart_img/top_spiderman.png"
     },
     {
       "id": 9,
       "name": "Iris",
-      "image": "female"
+      "image": "http://marvel-force-chart.surge.sh/marvel_force_chart_img/top_spiderman.png"
     },
     {
       "id": 10,
       "name": "Jane",
-      "image": "female"
+      "image": "http://marvel-force-chart.surge.sh/marvel_force_chart_img/top_spiderman.png"
     }
   ],
   "links": [
@@ -64,7 +64,6 @@
       "source": 1,
       "target": 6
     },
-
     {
       "source": 2,
       "target": 3
@@ -72,9 +71,7 @@
     {
       "source": 2,
       "target": 7
-    }
-  ,
-
+    },
     {
       "source": 3,
       "target": 4
@@ -82,14 +79,11 @@
     {
       "source": 8,
       "target": 3
-    }
-  ,
+    },
     {
       "source": 4,
       "target": 5
-    }
-  ,
-
+    },
     {
       "source": 4,
       "target": 9
@@ -97,6 +91,26 @@
     {
       "source": 5,
       "target": 10
+    },
+    {
+      "source": 1,
+      "target": 3
+    },
+    {
+      "source": 2,
+      "target": 5
+    },
+    {
+      "source": 2,
+      "target": 6
+    },
+    {
+      "source": 3,
+      "target": 7
+    },
+    {
+      "source": 9,
+      "target": 5
     }
   ]
 }

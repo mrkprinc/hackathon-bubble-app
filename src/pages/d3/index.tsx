@@ -1,10 +1,11 @@
 import React from 'react'
 import data from '../../data/data.json'
-import { ForceGraph } from '../../components/forceGraph'
+import { ForceGraph } from '../../components/force-graph'
 
 function App() {
   const nodeHoverTooltip = React.useCallback((node) => {
-    return `<div>${node.name}</div>`
+    // TODO: Add more details about the connection
+    return `<div>${node.id}<img src=${node.image} alt="profile picture"></div>`
   }, [])
 
   return (

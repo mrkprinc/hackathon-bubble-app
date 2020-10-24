@@ -1,5 +1,4 @@
 import * as d3 from "d3"
-import "@fortawesome/fontawesome-free/css/all.min.css"
 import styles from "./forceGraph.module.css"
 
 export function runForceGraph(
@@ -15,15 +14,18 @@ export function runForceGraph(
   const height = containerRect.height;
   const width = containerRect.width;
 
-  const color = () => { return "#9D79A0"; };
+  const name = (d) => {
+    return d.name;
+  }
 
-  const icon = (d) => {
+  const image = (d) => {
     return d.image;
   }
 
-  const getClass = (d) => {
-    return d.gender === "male" ? styles.male : styles.female;
-  };
+  // TODO: we can change the styles using this if we want to apply different styles for each layer of connecitons
+  // const getClass = (d) => {
+  //   return d.gender === "male" ? styles.male : styles.female;
+  // };
 
   const drag = (simulation) => {
     const dragstarted = (d) => {
@@ -62,10 +64,12 @@ export function runForceGraph(
   const div = d3.select("#graph-tooltip");
 
   const addTooltip = (hoverTooltip, d, x, y) => {
+    console.log('d', d)
     div
       .transition()
       .duration(200)
-      .style("opacity", 0.9);
+      .style("opacity", 0.9)
+      .style("background-image", image(d));
     div
       .html(hoverTooltip(d))
       .style("left", `${x}px`)
@@ -103,16 +107,24 @@ export function runForceGraph(
     .join("line")
     .attr("stroke-width", d => Math.sqrt(d.value));
 
+  // Declare the nodes
   const node = svg
     .append("g")
     .attr("stroke", "#fff")
     .attr("stroke-width", 2)
     .selectAll("circle")
     .data(nodes)
+
+//  Enter the nodes.
+ var nodeEnter = node.enter().append("g")
+  .attr("class", "node")
+
+  const images =nodeEnter.append("image")
+    .attr("xlink:href", function(d) { return d.image; })
     .join("circle")
-    .attr("r", 12)
-    .attr("fill", color)
-    .call(drag(simulation));
+    .attr("width", "24px")
+    .attr("height", "24px")
+    .call(drag(simulation))
 
   const label = svg.append("g")
     .attr("class", "labels")
@@ -122,8 +134,8 @@ export function runForceGraph(
     .append("text")
     .attr('text-anchor', 'middle')
     .attr('dominant-baseline', 'central')
-    .attr("class", d => `fa ${getClass(d)}`)
-    .text(d => {return icon(d);})
+    // .attr("class", d => `fa ${getClass(d)}`)
+    .text(d => {return name(d);})
     .call(drag(simulation));
 
   label.on("mouseover", (d) => {
@@ -147,9 +159,15 @@ export function runForceGraph(
       .attr("cy", d => d.y);
 
     // update label positions
+    images
+      .attr("x", d => { return d.x; })
+      .attr("y", d => { return d.y; })
+
+    // update label positions
     label
       .attr("x", d => { return d.x; })
       .attr("y", d => { return d.y; })
+
   });
 
   return {
