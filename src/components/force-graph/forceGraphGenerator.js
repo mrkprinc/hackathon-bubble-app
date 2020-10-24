@@ -133,6 +133,7 @@ export function runForceGraph(
   return {
     destroy: () => {
       simulation.stop()
+      svg.remove()
     },
     nodes: () => {
       return svg.node()
