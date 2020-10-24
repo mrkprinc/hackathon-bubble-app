@@ -49,7 +49,10 @@ export default function BubbleContextComp({ children }) {
         target: connectedUser
       })))
       setNodes(Object.keys(bubbleData.usersData).map(userKey => ({
-        name: bubbleData.usersData[userKey].displayName, image: bubbleData.usersData[userKey].photoURL, id: bubbleData.usersData[userKey].id
+        name: bubbleData.usersData[userKey].displayName,
+        image: bubbleData.usersData[userKey].photoURL,
+        id: bubbleData.usersData[userKey].id,
+        isRoot: bubbleData.usersData[userKey].id === user.id
       })))
 
     })
