@@ -1,6 +1,8 @@
 import { useState, useEffect, createContext, useContext } from 'react'
 import firebase from 'src/firebase/clientApp'
 import Collections from 'src/firebase/collections.enum'
+import { Notification } from 'src/services/notifications.service'
+
 
 export type User = {
   id: string
@@ -8,7 +10,8 @@ export type User = {
   email: string
   photoURL: string
   createdAt?: firebase.firestore.Timestamp
-  connectedUsers?: string[]
+  connectedUsers?: string[],
+  notifications?: Notification[]
 }
 
 export const UserContext = createContext<{ user: User, [funcs: string]: any }>(null)
@@ -37,6 +40,7 @@ export default function UserContextComp({ children }) {
               email,
               photoURL,
               connectedUsers: [],
+              notifications: [],
               createdAt: nowStamp,
             }
             setUser({ ...initialData, id: uid });

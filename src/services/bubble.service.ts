@@ -1,6 +1,7 @@
 import firebase from 'src/firebase/clientApp'
 import Collections from 'src/firebase/collections.enum'
 import { User } from 'src/context/userContext'
+import { Notification } from './notifications.service'
 
 async function getConnectedUsers(user: User): Promise<User[]> {
   if (!user?.connectedUsers?.length) {
@@ -36,6 +37,10 @@ async function addToBubbleByEmail(currentUser: User, email: string) {
   });
   batch.update(userToAddSnapshot.ref, {
     connectedUsers: firebase.firestore.FieldValue.arrayUnion(currentUser.id),
+    notifications: firebase.firestore.FieldValue.arrayUnion({
+      type: 'New Connection',
+      fromName: currentUser.displayName
+    } as Notification)
   });
   await batch.commit();
   console.log('Added to bubble:', userToAddSnapshot.id)
