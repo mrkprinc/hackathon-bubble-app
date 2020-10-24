@@ -15,8 +15,9 @@ const AddToBubble: React.FC<AddToBubbleProps> = ({ children }) => {
       <InputGroup>
         <Input
           value={emailInput}
-          placeholder="Input"
+          placeholder="Email Address"
           onChange={(e) => setEmailInput(e.target.value)}
+          className={styles.input}
         />
         <Button
           onClick={() => bubbleService.addToBubbleByEmail(user, emailInput)}
