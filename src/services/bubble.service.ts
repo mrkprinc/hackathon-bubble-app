@@ -2,9 +2,9 @@ import firebase from 'src/firebase/clientApp'
 import Collections from 'src/firebase/collections.enum'
 import { User } from 'src/context/userContext'
 
-async function getUserBubble(user: User) {
+async function getConnectedUsers(user: User): Promise<User[]> {
   if (!user?.connectedUsers?.length) {
-    console.error("BubbleService: No connected users.")
+    console.log("BubbleService: No connected users.")
     return [];
   }
 
@@ -12,7 +12,7 @@ async function getUserBubble(user: User) {
     .collection(Collections.USERS)
     .where(firebase.firestore.FieldPath.documentId(), 'in', user?.connectedUsers || [])
     .get()
-    .then((snapshot) => snapshot.docs.map((doc) => doc.data()));
+    .then((snapshot) => snapshot.docs.map((doc) => ({ id: doc.id, ...doc.data() } as User)))
 
   console.log(connectedUsers);
   return connectedUsers;
@@ -45,6 +45,6 @@ async function addToBubbleByEmail(currentUser: User, email: string) {
 }
 
 export default {
-  getUserBubble,
+  getConnectedUsers,
   addToBubbleByEmail,
 }
