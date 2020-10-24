@@ -1,8 +1,8 @@
 import firebase from 'firebase/app'
-import 'firebase/auth' // If you need it
-import 'firebase/firestore' // If you need it
-// import 'firebase/storage' // If you need it
-// import 'firebase/analytics' // If you need it
+import 'firebase/auth'
+import 'firebase/firestore'
+import 'firebase/storage'
+import 'firebase/analytics'
 
 const clientCredentials = {
   apiKey: process.env.NEXT_PUBLIC_FIREBASE_API_KEY,
@@ -17,8 +17,6 @@ const clientCredentials = {
 // Check that `window` is in scope for the analytics module!
 if (typeof window !== 'undefined' && !firebase.apps.length) {
   firebase.initializeApp(clientCredentials)
-  // To enable analytics. https://firebase.google.com/docs/analytics/get-started
-  if ('measurementId' in clientCredentials) firebase.analytics()
 }
 
 export default firebase

@@ -1,11 +1,11 @@
 import { useState, useEffect, createContext, useContext } from 'react'
-import firebase from '../firebase/clientApp'
+import firebase from 'src/firebase/clientApp'
 
 export const UserContext = createContext()
 
 export default function UserContextComp({ children }) {
   const [user, setUser] = useState(null)
-  const [loadingUser, setLoadingUser] = useState(true) // Helpful, to update the UI accordingly.
+  const [loadingUser, setLoadingUser] = useState(true)
 
   useEffect(() => {
     // Listen authenticated user

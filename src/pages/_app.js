@@ -1,6 +1,5 @@
-import UserProvider from '../context/userContext'
+import UserProvider from 'src/context/userContext'
 
-// Custom App to wrap it with context provider
 export default function App({ Component, pageProps }) {
   return (
     <UserProvider>
