@@ -8,8 +8,9 @@ interface BubbleSummaryProps {
   count: number
   max: number
 }
+
 const BubbleSummary: React.FC<BubbleSummaryProps> = ({ title = '', count = 0, max=100}) => {
-const getCountColor = () => {
+  const getCountColor = () => {
     if(count > 0 && count <= 4){
       return "success"
     } 

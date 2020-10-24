@@ -13,7 +13,7 @@ export default function Home() {
   // Our custom hook to get context values
   const { loadingUser, user } = useUser();
   const bubbleData = useBubble();
-  console.log(bubbleData)
+
   return (
     <>
       {user ? (
