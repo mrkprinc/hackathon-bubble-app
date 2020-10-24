@@ -1,6 +1,7 @@
-import { useState, useEffect, createContext, useContext } from 'react'
+import { useState, useEffect, createContext, useContext, useCallback } from 'react'
 import bubbleService from 'src/services/bubble.service'
 import { User, useUser } from './userContext'
+import { NetworkNode, NetworkLink } from 'src/components/force-graph'
 
 export type BubbleData = {
   usersData: {
@@ -8,60 +9,65 @@ export type BubbleData = {
   },
   uniqueIds: Set<string>,
   refresh: () => void,
-  nodes: any,
-  links: any
+  nodes: NetworkNode[],
+  edges: NetworkLink[],
 }
 
 const initialData = {
-  usersData: {},
-  uniqueIds: new Set<string>()
+  usersData: {} as { [id: string]: User },
+  uniqueIds: new Set<string>(),
+  nodes: [],
+  edges: []
 }
 
 export const BubbleContext = createContext<BubbleData>(null)
 
 export default function BubbleContextComp({ children }) {
   const [bubbleData, setBubbleData] = useState(initialData)
-  const [nodes, setNodes] = useState([])
-  const [links, setLinks] = useState([])
 
   const { user } = useUser()
-
-  function getBubbleData() {
+  const getBubbleData = useCallback(function() {
     if (!user) {
       setBubbleData(initialData);
       return;
     }
 
-    bubbleData.uniqueIds.add(user.id);
-    bubbleData.usersData[user.id] = user;
-    user.connectedUsers?.forEach(bubbleData.uniqueIds.add, bubbleData.uniqueIds);
+    const usersData: { [id: string]: User } = {};
+    const uniqueIds = new Set<string>();
+
+    uniqueIds.add(user.id);
+    usersData[user.id] = user;
+    user.connectedUsers?.forEach(uniqueIds.add, uniqueIds);
     
     bubbleService.getConnectedUsers(user).then(connectedUsers => {
       connectedUsers.forEach((connectedUser) => {
-        bubbleData.usersData[connectedUser.id] = connectedUser;
-        connectedUser.connectedUsers?.forEach(bubbleData.uniqueIds.add, bubbleData.uniqueIds);
+        usersData[connectedUser.id] = connectedUser;
+        connectedUser.connectedUsers?.forEach(uniqueIds.add, uniqueIds);
       });
 
-      console.log(bubbleData)
-      setBubbleData({ ...bubbleData });
-      setLinks(user.connectedUsers.map(connectedUser => ({
-        source: user.id,
-        target: connectedUser
-      })))
-      setNodes(Object.keys(bubbleData.usersData).map(userKey => ({
-        name: bubbleData.usersData[userKey].displayName,
-        image: bubbleData.usersData[userKey].photoURL,
-        id: bubbleData.usersData[userKey].id,
-        isRoot: bubbleData.usersData[userKey].id === user.id
-      })))
+      const nodes: NetworkNode[] = Array.from(uniqueIds).map((id) => ({
+        id,
+        name: bubbleData.usersData[id]?.displayName ?? 'Placeholder',
+        image: bubbleData.usersData[id]?.photoURL ?? 'https://via.placeholder.com/150',
+        isRoot: id === user.id,
+      }))
 
+      const edges: NetworkLink[] = []
+      Object.entries(usersData).forEach(([id, userData]) => {
+        userData.connectedUsers?.forEach((connectedId) => {
+          edges.push({ source: id, target: connectedId })
+        })
+      })
+
+      console.log('bubbleData', { usersData, uniqueIds, nodes, edges })
+      setBubbleData({ usersData, uniqueIds, nodes, edges });
     })
-  }
+  }, [user])
 
   useEffect(getBubbleData, [user]);
 
   return (
-    <BubbleContext.Provider value={{ ...bubbleData, refresh: getBubbleData, nodes, links }}>
+    <BubbleContext.Provider value={{ ...bubbleData, refresh: getBubbleData }}>
       {children}
     </BubbleContext.Provider>
   )
