@@ -8,7 +8,7 @@ export function runForceGraph(container, linksData, nodesData) {
   const containerRect = container.getBoundingClientRect();
   const height = containerRect.height;
   const width = containerRect.width;
-  const imageSize = 24;
+  const imageSize = 50;
 
   const name = (d) => {
     return d.name;
@@ -53,8 +53,8 @@ export function runForceGraph(container, linksData, nodesData) {
       "link",
       d3.forceLink(links).id((d) => d.id)
     )
-    // .force("center", d3.forceCenter())
-    .force("charge", d3.forceManyBody().strength(-150))
+    .force("center", d3.forceCenter())
+    .force("charge", d3.forceManyBody().strength(-2000))
     .force("x", d3.forceX())
     .force("y", d3.forceY());
 
