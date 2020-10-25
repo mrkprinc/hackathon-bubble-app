@@ -8,6 +8,7 @@ import BubbleSummary from "src/components/bubble-summary/bubbleSummary";
 import { useUser } from "src/context/userContext";
 import { useBubble } from "src/context/bubbleContext";
 import { ForceGraph } from "src/components/force-graph";
+import notificationService from 'src/services/notifications.service'
 
 export default function Home() {
   // Our custom hook to get context values
@@ -18,9 +19,14 @@ export default function Home() {
     <>
       {user ? (
         <BaseLayout>
-          <Alert>
-            <>hello</>
-          </Alert>
+          {user.notifications?.map((notification, idx) => (
+            <Alert
+              key={idx}
+              notification={notification}
+              dismiss={() => notificationService.dismissNotification(user, notification)}
+            />
+          ))}
+
           <BubbleVisual>
             <ForceGraph
               linksData={bubbleData.edges}
@@ -29,6 +35,26 @@ export default function Home() {
           </BubbleVisual>
           <BubbleSummary title="Total of pepple in your close bubble" count={Object.keys(bubbleData.usersData).length} max={10}/>
           <BubbleSummary title="Total of people in your bubble" count={bubbleData.nodes.length} max={10}/>
+
+          <div>
+            <button
+              onClick={() => notificationService.sendNotificationToUsers(
+                Array.from(bubbleData.uniqueIds),
+                { type: 'Possible Exposure Warning' },
+              )}
+            >
+              I was possibly exposed to Covid-19.
+            </button>
+
+            <button
+              onClick={() => notificationService.sendNotificationToUsers(
+                Array.from(bubbleData.uniqueIds),
+                { type: 'Possible Exposure Warning' }
+              )}
+            >
+              I have tested positive for Covid-19.
+            </button>
+          </div>
         </BaseLayout>
       ) : (
         <Login />

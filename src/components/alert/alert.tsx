@@ -1,15 +1,42 @@
-import { ReactNode } from "react";
-import { UncontrolledAlert } from "reactstrap";
+import { Alert as ReactstrapAlert } from "reactstrap";
+import { Notification } from "src/services/notifications.service"
 import styles from "./alert.module.scss";
 
 type AlertProps = {
-  children: ReactNode;
+  notification: Notification
+  dismiss: () => void
 };
 
-const Alert: React.FC<AlertProps> = ({ children }) => (
-  <UncontrolledAlert color="info" className="alert">
-    This is an alert
-  </UncontrolledAlert>
-);
+const Alert: React.FC<AlertProps> = ({ notification, dismiss }) => {
+  let message: string;
+  let color = 'info'
+
+  switch (notification.type) {
+    case 'New Connection':
+      message = `New Connection! ${notification.fromName} has added you to their bubble.`;
+      color = 'info';
+      break;
+    case 'Possible Exposure Warning':
+      message = 'Someone connected to you says they may have been exposed to Covid-19.';
+      color = 'warning';
+      break;
+    case 'Positive Test Warning':
+      message = 'Someone connected to you has tested positive for Covid-19.';
+      color = 'danger';
+      break;
+  }
+
+  if (!message) return null
+
+  return (
+    <ReactstrapAlert
+      color={color}
+      toggle={dismiss}
+      className="alert"
+    >
+      {message}
+    </ReactstrapAlert>
+  );
+}
 
 export default Alert;
