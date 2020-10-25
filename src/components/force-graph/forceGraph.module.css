@@ -24,6 +24,12 @@
   font-weight: 700;
 }
 
+.extraBubbleNumber {
+  fill: #616263;
+  font-size: 12px;
+  font-weight: 700;
+}
+
 .node text {
   font: 12px sans-serif;
 }
