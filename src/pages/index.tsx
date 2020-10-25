@@ -34,12 +34,12 @@ export default function Home() {
             />
           </BubbleVisual>
           <BubbleSummary
-            title="Total of pepple in your close bubble"
+            title="Immediate Bubble Size"
             count={Object.keys(bubbleData.usersData).length}
             max={10}
           />
           <BubbleSummary
-            title="Total of people in your bubble"
+            title="Extended Bubble Size "
             count={bubbleData.nodes.length}
             max={10}
           />
