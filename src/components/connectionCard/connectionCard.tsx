@@ -19,7 +19,7 @@ const ConnectionCard: React.FC<ConnectionProps> = ({ connection }) => {
     <Container fluid className={'mt-1 mb-1'}>
       <Row>
         <Col xs="auto" sm="auto">
-          <img src={connection.photoURL || 'https://via.placeholder.com/150'} alt="avatar" className="rounded-circle" width="100" height="100" />
+          <img src={connection.photoURL || '/avatar_placeholder.jpg'} alt="avatar" className="rounded-circle" width="100" height="100" />
         </Col>
         <Col xs="auto" sm="auto">
           <CardTitle>{connection.displayName}</CardTitle>
