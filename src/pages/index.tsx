@@ -37,6 +37,26 @@ export default function Home() {
           </BubbleVisual>
           <BubbleSummary title="Total of pepple in your close bubble" count={Object.keys(bubbleData.usersData).length} max={10}/>
           <BubbleSummary title="Total of people in your bubble" count={bubbleData.nodes.length} max={10}/>
+
+          <div>
+            <button
+              onClick={() => notificationService.sendNotificationToUsers(
+                Array.from(bubbleData.uniqueIds),
+                { type: 'Possible Exposure Warning' },
+              )}
+            >
+              I was possibly exposed to Covid-19.
+            </button>
+
+            <button
+              onClick={() => notificationService.sendNotificationToUsers(
+                Array.from(bubbleData.uniqueIds),
+                { type: 'Possible Exposure Warning' }
+              )}
+            >
+              I have tested positive for Covid-19.
+            </button>
+          </div>
         </BaseLayout>
       ) : (
         <Login />
