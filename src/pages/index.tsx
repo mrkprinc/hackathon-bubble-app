@@ -1,6 +1,7 @@
 import Alert from "src/components/alert/alert";
 import BaseLayout from "src/layouts/base-layout";
 import BubbleVisual from "src/components/bubbleVisual/bubbleVisual";
+import Loading from "src/components/loading/loading";
 import Login from "src/components/login/login";
 import BubbleSummary from "src/components/bubble-summary/bubbleSummary";
 import { useUser } from "src/context/userContext";
@@ -15,7 +16,7 @@ export default function Home() {
 
   return (
     <>
-      {user ? (
+      {user && (
         <BaseLayout>
           {user.notifications?.map((notification, idx) => (
             <Alert
@@ -43,9 +44,9 @@ export default function Home() {
             max={10}
           />
         </BaseLayout>
-      ) : (
-        <Login />
       )}
+      {loadingUser && <Loading />}
+      {!user && !loadingUser && <Login />}
     </>
   );
 }

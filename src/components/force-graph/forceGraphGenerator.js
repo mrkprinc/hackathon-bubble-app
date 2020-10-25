@@ -66,6 +66,24 @@ export function runForceGraph(container, linksData, nodesData) {
       d3.zoom().on("zoom", () => svg.attr("transform", d3.event.transform))
     );
 
+  const defs = svg.append("defs");
+
+  defs
+    .append("pattern")
+    .attr("id", 5)
+    .attr("height", "100%")
+    .attr("width", "100%")
+    .attr("patternContentUnits", "objectBoundingBox")
+    .append("image")
+    .attr("height", 1)
+    .attr("width", 1)
+    .attr("preserveAspectRatio", "none")
+    .attr("xmlns:xlink", "http://www.w3.org/1999/xlink")
+    .attr(
+      "xlink:href",
+      "https://lh3.googleusercontent.com/-E7GVN0C3seU/AAAAAAAAAAI/AAAAAAAAAAA/AMZuucmNEKAQ2pWQa-rHWimZzTpSFOSvcQ/s96-c/photo.jpg"
+    );
+
   const link = svg
     .append("g")
     .attr("stroke", "#999")
@@ -79,21 +97,31 @@ export function runForceGraph(container, linksData, nodesData) {
   const node = svg
     .append("g")
     .attr("stroke", "#fff")
-    .attr("stroke-width", 2)
+    .attr("stroke-width", 3)
     .selectAll("circle")
-    .data(nodes);
-
-  //  Enter the nodes.
-  var nodeEnter = node.enter().append("g").attr("class", "node");
-
-  const images = nodeEnter
-    .append("image")
-    .attr("xlink:href", (d) => image(d))
-    .join("circle")
-    .attr("width", imageSize)
-    .attr("height", imageSize)
-    .attr("opacity", (d) => (d.isRoot ? 1 : 0.75))
+    .data(nodes)
+    .enter()
+    .append("circle")
+    .attr("r", (d) => (d.isRoot ? 25 : 15))
+    .attr("fill", (d) => `url(#${d.id})`)
     .call(drag(simulation));
+
+  defs
+    .selectAll(".image-pattern")
+    .data(nodes)
+    .enter()
+    .append("pattern")
+    .attr("class", "image-pattern")
+    .attr("id", (d) => d.id)
+    .attr("height", "100%")
+    .attr("width", "100%")
+    .attr("patternContentUnits", "objectBoundingBox")
+    .append("image")
+    .attr("height", 1)
+    .attr("width", 1)
+    .attr("preserveAspectRatio", "none")
+    .attr("xmlns:xlink", "http://www.w3.org/1999/xlink")
+    .attr("xlink:href", (d) => d.image);
 
   const label = svg
     .append("g")
@@ -108,7 +136,6 @@ export function runForceGraph(container, linksData, nodesData) {
     .text((d) => {
       return name(d);
     });
-  // .call(drag(simulation))
 
   simulation.on("tick", () => {
     //update link positions
@@ -122,7 +149,7 @@ export function runForceGraph(container, linksData, nodesData) {
     node.attr("cx", (d) => d.x).attr("cy", (d) => d.y);
 
     // update label positions
-    images
+    node
       .attr("x", (d) => {
         return d.x - imageSize / 2;
       })
