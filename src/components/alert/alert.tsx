@@ -16,6 +16,14 @@ const Alert: React.FC<AlertProps> = ({ notification, dismiss }) => {
       message = `New Connection! ${notification.fromName} has added you to their bubble.`;
       color = 'info';
       break;
+    case 'Possible Exposure Warning':
+      message = 'Someone connected to you says they may have been exposed to Covid-19.';
+      color = 'warning';
+      break;
+    case 'Positive Test Warning':
+      message = 'Someone connected to you has tested positive for Covid-19.';
+      color = 'danger';
+      break;
   }
 
   if (!message) return null
