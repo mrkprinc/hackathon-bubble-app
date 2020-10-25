@@ -1,4 +1,4 @@
-import { useState, useEffect, createContext, useContext, useCallback } from 'react'
+import { useState, useEffect, createContext, useContext, useCallback, useRef } from 'react'
 import bubbleService from 'src/services/bubble.service'
 import { User, useUser } from './userContext'
 import { NetworkNode, NetworkLink } from 'src/components/force-graph'
@@ -26,12 +26,22 @@ export default function BubbleContextComp({ children }) {
   const [bubbleData, setBubbleData] = useState(initialData)
 
   const { user } = useUser()
-  const getBubbleData = useCallback(function() {
+  const prevConnectedUsers = useRef(new Set<string>())
+
+  useEffect(() => {
     if (!user) {
       setBubbleData(initialData);
       return;
     }
 
+    const updatedConnectedUsers = new Set(user.connectedUsers);
+    if (setsAreEqual(updatedConnectedUsers, prevConnectedUsers.current)) return;
+
+    prevConnectedUsers.current = updatedConnectedUsers;
+    updateBubbleData();
+  }, [user]);
+
+  function updateBubbleData() {
     const usersData: { [id: string]: User } = {};
     const uniqueIds = new Set<string>();
 
@@ -47,8 +57,8 @@ export default function BubbleContextComp({ children }) {
 
       const nodes: NetworkNode[] = Array.from(uniqueIds).map((id) => ({
         id,
-        name: bubbleData.usersData[id]?.displayName,
-        image: bubbleData.usersData[id]?.photoURL ?? 'https://via.placeholder.com/150',
+        name: usersData[id]?.displayName,
+        image: usersData[id]?.photoURL ?? 'https://via.placeholder.com/150',
         isRoot: id === user.id,
       }))
 
@@ -59,18 +69,23 @@ export default function BubbleContextComp({ children }) {
         })
       })
 
-      console.log('bubbleData', { usersData, uniqueIds, nodes, edges })
-      setBubbleData({ usersData, uniqueIds, nodes, edges });
+      const updatedBubbleData = { usersData, uniqueIds, nodes, edges }
+      console.log('Updated bubble data:', updatedBubbleData)
+      setBubbleData(updatedBubbleData);
     })
-  }, [user])
-
-  useEffect(getBubbleData, [user]);
+  }
 
   return (
-    <BubbleContext.Provider value={{ ...bubbleData, refresh: getBubbleData }}>
+    <BubbleContext.Provider value={{ ...bubbleData, refresh: updateBubbleData }}>
       {children}
     </BubbleContext.Provider>
   )
+}
+
+function setsAreEqual(setA, setB) {
+  if (setA.size !== setB.size) return false;
+  for (let a of setA) if (!setB.has(a)) return false;
+  return true;
 }
 
 export const useBubble = () => useContext(BubbleContext)
