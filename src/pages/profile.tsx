@@ -114,7 +114,7 @@ export default function Profile() {
                         user.connectedUsers,
                         userData.connectedUsers
                       )}
-                      totalConnections={userData.connectedUsers.length}
+                      totalConnections={userData.connectedUsers.length + (userData.extraBubbleMembers || 0)}
                     />
                   ) : null;
                 })}
