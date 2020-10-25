@@ -104,19 +104,21 @@ export default function Profile() {
             </div>
             <div className={styles.section}>
               <h6>My Connections</h6>
-              {Object.entries(bubbleData.usersData).map(([_id, userData]) => {
-                return userData.id !== user.id ? (
-                  <ConnectionCard
-                    key={userData.id}
-                    connection={userData}
-                    mutualConnections={calcMutualConnections(
-                      user.connectedUsers,
-                      userData.connectedUsers
-                    )}
-                    totalConnections={userData.connectedUsers.length}
-                  />
-                ) : null;
-              })}
+              <div style={{ width: "100%", maxWidth: 500 }}>
+                {Object.entries(bubbleData.usersData).map(([_id, userData]) => {
+                  return userData.id !== user.id ? (
+                    <ConnectionCard
+                      key={userData.id}
+                      connection={userData}
+                      mutualConnections={calcMutualConnections(
+                        user.connectedUsers,
+                        userData.connectedUsers
+                      )}
+                      totalConnections={userData.connectedUsers.length}
+                    />
+                  ) : null;
+                })}
+              </div>
             </div>
           </div>
         </BaseLayout>
