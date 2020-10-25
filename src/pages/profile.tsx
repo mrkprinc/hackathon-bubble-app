@@ -16,6 +16,8 @@ export default function Profile() {
     bubbleService.setExternalOrg(user, checked);
   }
 
+  if (!user) return null
+
   return (
     <>
       <BaseLayout>
