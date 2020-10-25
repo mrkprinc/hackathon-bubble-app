@@ -12,6 +12,12 @@ export default function Profile() {
   const { loadingUser, user } = useUser();
   const bubbleData = useBubble();
 
+  const calcMutualConnections = (userConnections: Array<string>, connectedUserConnections: Array<string>) => {
+    const mutualConnectionsMap = [...userConnections, ...connectedUserConnections].reduce((map, val) => {map[val] = (map[val] || 0)+1; return map}, {} )
+    const  count = Object.entries(mutualConnectionsMap).filter(([_id, c]) => c > 1).length
+    return count
+  }
+
   const setExternalOrg = (checked: boolean) => {
     bubbleService.updateSetting(user, 'externalOrg', checked);
   }
@@ -82,7 +88,13 @@ export default function Profile() {
           <div className={styles.section}>
             <h6>My Connections</h6>
             {Object.entries(bubbleData.usersData).map(([_id, userData]) => {
-              return userData.id !== user.id ? <ConnectionCard key={userData.id} connection={userData} /> : null
+              return userData.id !== user.id
+                ? <ConnectionCard
+                    key={userData.id}
+                    connection={userData}
+                    mutualConnections={calcMutualConnections(user.connectedUsers, userData.connectedUsers)}
+                    totalConnections={userData.connectedUsers.length} />
+                : null
             })}
           </div>
         </div>

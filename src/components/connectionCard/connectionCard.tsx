@@ -9,11 +9,11 @@ import bubbleService from "src/services/bubble.service";
 
 interface ConnectionProps {
   connection: any
-  // mutualConnections: number
-  // totalConnections: number
+  mutualConnections: number
+  totalConnections: number
 }
 
-const ConnectionCard: React.FC<ConnectionProps> = ({ connection }) => {
+const ConnectionCard: React.FC<ConnectionProps> = ({ connection, mutualConnections, totalConnections }) => {
   const { user } = useUser();
   return (
     <Container fluid className={'mt-1 mb-1'}>
@@ -23,12 +23,12 @@ const ConnectionCard: React.FC<ConnectionProps> = ({ connection }) => {
         </Col>
         <Col xs="auto" sm="auto">
           <CardTitle>{connection.displayName}</CardTitle>
-          {/* <CardSubtitle>
+           <CardSubtitle>
             Mutual connections <Badge color="info">{mutualConnections}</Badge>
           </CardSubtitle>
           <CardSubtitle>
             Total connections <Badge color="info">{totalConnections}</Badge>
-          </CardSubtitle> */}
+          </CardSubtitle>
           {connection.externalOrg && <Badge color="warning">Work/School</Badge>}
         </Col>
         <Col xs={12} sm="auto">
