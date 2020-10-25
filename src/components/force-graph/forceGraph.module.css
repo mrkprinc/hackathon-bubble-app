@@ -13,10 +13,15 @@
 /* TODO: Pick colors to match app styles */
 .rootUser {
   fill: rgb(22, 130, 218);
+  width: 20px;
+  font-size: 10px;
+  font-weight: 700;
 }
 
 .bubbleUser {
-  fill: rgb(246, 0, 0);
+  fill: #333;
+  font-size: 10px;
+  font-weight: 700;
 }
 
 .node text {
