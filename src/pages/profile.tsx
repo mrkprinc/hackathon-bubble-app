@@ -65,7 +65,8 @@ export default function Profile() {
           <div className={styles.section}>
             <h6>My Connections</h6>
             {Object.entries(bubbleData.usersData).map(([_id, userData]) => {
-                return userData.id !== user.id ? <ConnectionCard connection={userData} isWorkSchool={true} /> : null
+              console.log('userData', userData)
+                return userData.id !== user.id ? <ConnectionCard connection={userData} /> : null
             })}
           </div>
         </div>

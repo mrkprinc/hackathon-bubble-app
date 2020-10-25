@@ -11,12 +11,9 @@ interface ConnectionProps {
   connection: any
   // mutualConnections: number
   // totalConnections: number
-  isWorkSchool: boolean
 }
 
-const ConnectionCard: React.FC<ConnectionProps> = ({
-  connection, isWorkSchool
-}) => {
+const ConnectionCard: React.FC<ConnectionProps> = ({ connection }) => {
   const { user } = useUser();
   return (
     <Container fluid className={'mt-1 mb-1'}>
@@ -32,7 +29,7 @@ const ConnectionCard: React.FC<ConnectionProps> = ({
           <CardSubtitle>
             Total connections <Badge color="info">{totalConnections}</Badge>
           </CardSubtitle> */}
-          {isWorkSchool && <Badge color="warning">Work/School</Badge>}
+          {connection.externalOrg && <Badge color="warning">Work/School</Badge>}
         </Col>
         <Col xs={12} sm="auto">
           <div style={{ display: 'flex', flex:1, flexDirection: "row-reverse"}}>
