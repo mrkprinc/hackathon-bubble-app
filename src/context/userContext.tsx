@@ -13,6 +13,7 @@ export type User = {
   connectedUsers?: string[]
   notifications?: Notification[]
   externalOrg?: boolean
+  extraBubbleMembers?: number
 }
 
 export const UserContext = createContext<{ user: User, [funcs: string]: any }>(null)
@@ -43,8 +44,9 @@ export default function UserContextComp({ children }) {
               connectedUsers: [],
               notifications: [],
               externalOrg: false,
+              extraBubbleMembers: 0,
               createdAt: nowStamp,
-            }
+            } as User
             setUser({ ...initialData, id: uid });
             await userDoc.ref.set(initialData)
           }
