@@ -1,11 +1,5 @@
-import {
-  Navbar,
-  NavbarBrand,
-  NavLink,
-  NavbarToggler,
-  Collapse,
-  Nav,
-} from "reactstrap";
+import Link from "next/link";
+import { Navbar, NavbarBrand, NavLink, Collapse, Nav } from "reactstrap";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faBars, faPlusCircle } from "@fortawesome/free-solid-svg-icons";
 import { useState } from "react";
@@ -15,11 +9,15 @@ import AddToBubble from "src/components/addToBubble/addToBubble";
 import styles from "./mainNav.module.scss";
 
 const MainNav: React.FC = () => {
-  const [isNavOpen, setIsNavOpen] = useState(false);
-  const [isAddOpen, setIsAddOpen] = useState(false);
+  const [navStatus, setNavStatus] = useState({
+    isNavOpen: false,
+    isAddOpen: false,
+  });
 
-  const toggleNav = () => setIsNavOpen(!isNavOpen);
-  const toggleAdd = () => setIsAddOpen(!isAddOpen);
+  const toggleNav = () =>
+    setNavStatus({ isNavOpen: !navStatus.isNavOpen, isAddOpen: false });
+  const toggleAdd = () =>
+    setNavStatus({ isAddOpen: !navStatus.isAddOpen, isNavOpen: false });
 
   return (
     <Navbar expand="md" light fixed="top" className={styles.navBar}>
@@ -27,20 +25,24 @@ const MainNav: React.FC = () => {
         <FontAwesomeIcon icon={faBars} />
       </Nav>
       <NavbarBrand className={styles.navBrand} href="/">
-        MY BUBBLE
+        MYBUBBLE
       </NavbarBrand>
 
       <Nav onClick={toggleAdd}>
         <FontAwesomeIcon icon={faPlusCircle} />
       </Nav>
 
-      <Collapse navbar isOpen={isNavOpen}>
-        <NavLink onClick={authService.signOut} role="button">
-          Logout
-        </NavLink>
+      <Collapse navbar isOpen={navStatus.isNavOpen}>
+        <Link passHref href="/">
+          <NavLink active>My Bubble</NavLink>
+        </Link>
+        <Link passHref href="/profile">
+          <NavLink active>Profile</NavLink>
+        </Link>
+        <NavLink onClick={authService.signOut}>Logout</NavLink>
       </Collapse>
 
-      <Collapse navbar isOpen={isAddOpen}>
+      <Collapse navbar isOpen={navStatus.isAddOpen}>
         <AddToBubble />
       </Collapse>
     </Navbar>

@@ -9,7 +9,7 @@ import ConnectionCard from "src/components/connectionCard/connectionCard";
 import { useUser } from "src/context/userContext";
 import { useBubble } from "src/context/bubbleContext";
 import { ForceGraph } from "src/components/force-graph";
-import notificationService from 'src/services/notifications.service'
+import notificationService from "src/services/notifications.service";
 
 export default function Home() {
   // Our custom hook to get context values
@@ -24,7 +24,9 @@ export default function Home() {
             <Alert
               key={idx}
               notification={notification}
-              dismiss={() => notificationService.dismissNotification(user, notification)}
+              dismiss={() =>
+                notificationService.dismissNotification(user, notification)
+              }
             />
           ))}
 
@@ -35,28 +37,16 @@ export default function Home() {
               nodesData={bubbleData.nodes}
             />
           </BubbleVisual>
-          <BubbleSummary title="Total of pepple in your close bubble" count={Object.keys(bubbleData.usersData).length} max={10}/>
-          <BubbleSummary title="Total of people in your bubble" count={bubbleData.nodes.length} max={10}/>
-
-          <div>
-            <button
-              onClick={() => notificationService.sendNotificationToUsers(
-                Array.from(bubbleData.uniqueIds),
-                { type: 'Possible Exposure Warning' },
-              )}
-            >
-              I was possibly exposed to Covid-19.
-            </button>
-
-            <button
-              onClick={() => notificationService.sendNotificationToUsers(
-                Array.from(bubbleData.uniqueIds),
-                { type: 'Possible Exposure Warning' }
-              )}
-            >
-              I have tested positive for Covid-19.
-            </button>
-          </div>
+          <BubbleSummary
+            title="Total of pepple in your close bubble"
+            count={Object.keys(bubbleData.usersData).length}
+            max={10}
+          />
+          <BubbleSummary
+            title="Total of people in your bubble"
+            count={bubbleData.nodes.length}
+            max={10}
+          />
         </BaseLayout>
       ) : (
         <Login />
