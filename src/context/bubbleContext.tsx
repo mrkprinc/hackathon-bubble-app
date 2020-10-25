@@ -58,7 +58,7 @@ export default function BubbleContextComp({ children }) {
       const nodes: NetworkNode[] = Array.from(uniqueIds).map((id) => ({
         id,
         name: usersData[id]?.displayName,
-        image: usersData[id]?.photoURL ?? 'https://via.placeholder.com/150',
+        image: usersData[id]?.photoURL ?? '/avatar_placeholder.jpg',
         isRoot: id === user.id,
       }))
 
