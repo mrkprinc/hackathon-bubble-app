@@ -21,12 +21,13 @@ const MainNav: React.FC = () => {
 
   return (
     <Navbar expand="md" light fixed="top" className={styles.navBar}>
-      <Nav onClick={toggleNav}>
+      <Nav onClick={toggleNav} className="mr-3">
         <FontAwesomeIcon icon={faBars} />
       </Nav>
-      <NavbarBrand className={styles.navBrand} href="/">
-        MYBUBBLE
-      </NavbarBrand>
+
+      <Link passHref href="/">
+        <NavbarBrand className={styles.navBrand}>MYBUBBLE</NavbarBrand>
+      </Link>
 
       <Nav onClick={toggleAdd}>
         <FontAwesomeIcon icon={faPlusCircle} />
