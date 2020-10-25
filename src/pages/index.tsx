@@ -37,11 +37,13 @@ export default function Home() {
             title="Immediate Bubble Size"
             count={Object.keys(bubbleData.usersData).length}
             max={10}
+            extra={user.extraBubbleMembers}
           />
           <BubbleSummary
             title="Extended Bubble Size "
             count={bubbleData.nodes.length}
             max={10}
+            extra={bubbleData.totalExtraBubbleMembers}
           />
         </BaseLayout>
       )}

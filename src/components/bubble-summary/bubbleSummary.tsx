@@ -7,9 +7,10 @@ interface BubbleSummaryProps {
   title: string
   count: number
   max: number
+  extra?: number
 }
 
-const BubbleSummary: React.FC<BubbleSummaryProps> = ({ title = '', count = 0, max=100}) => {
+const BubbleSummary: React.FC<BubbleSummaryProps> = ({ title = '', count = 0, max = 100, extra = 0 }) => {
   const getCountColor = () => {
     if(count > 0 && count <= 4){
       return "success"
@@ -24,7 +25,10 @@ const BubbleSummary: React.FC<BubbleSummaryProps> = ({ title = '', count = 0, ma
     <Card>
       <CardTitle>{title}</CardTitle>
       <CardBody>
-      <Progress color={getCountColor()} value={count} max={max} >{count}</Progress>
+      <Progress multi>
+        <Progress bar color={getCountColor()} value={count} max={max}>{count}</Progress>
+        <Progress bar color="info" value={extra} max={max}>{extra}</Progress>
+      </Progress>
       </CardBody>
     </Card>
   );
