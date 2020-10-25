@@ -26,7 +26,6 @@ export default function Home() {
               }
             />
           ))}
-
           <BubbleVisual>
             <ForceGraph
               linksData={bubbleData.edges}
