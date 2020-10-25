@@ -68,22 +68,6 @@ export function runForceGraph(container, linksData, nodesData) {
 
   const defs = svg.append("defs");
 
-  defs
-    .append("pattern")
-    .attr("id", 5)
-    .attr("height", "100%")
-    .attr("width", "100%")
-    .attr("patternContentUnits", "objectBoundingBox")
-    .append("image")
-    .attr("height", 1)
-    .attr("width", 1)
-    .attr("preserveAspectRatio", "none")
-    .attr("xmlns:xlink", "http://www.w3.org/1999/xlink")
-    .attr(
-      "xlink:href",
-      "https://lh3.googleusercontent.com/-E7GVN0C3seU/AAAAAAAAAAI/AAAAAAAAAAA/AMZuucmNEKAQ2pWQa-rHWimZzTpSFOSvcQ/s96-c/photo.jpg"
-    );
-
   const link = svg
     .append("g")
     .attr("stroke", "#999")
@@ -97,13 +81,14 @@ export function runForceGraph(container, linksData, nodesData) {
   const node = svg
     .append("g")
     .attr("stroke", "#fff")
-    .attr("stroke-width", 3)
+    .attr("stroke-width", 2)
     .selectAll("circle")
     .data(nodes)
     .enter()
     .append("circle")
     .attr("r", (d) => (d.isRoot ? 25 : 15))
     .attr("fill", (d) => `url(#${d.id})`)
+    .style("filter", `url(#drop-shadow)`)
     .call(drag(simulation));
 
   defs
@@ -123,6 +108,40 @@ export function runForceGraph(container, linksData, nodesData) {
     .attr("xmlns:xlink", "http://www.w3.org/1999/xlink")
     .attr("xlink:href", (d) => d.image);
 
+  var filter = defs
+    .append("filter")
+    .attr("id", "drop-shadow")
+    .attr("height", "250%")
+    .attr("width", "250%");
+
+  filter
+    .append("feGaussianBlur")
+    .attr("in", "SourceAlpha")
+    .attr("stdDeviation", 1)
+    .attr("result", "blur");
+
+  filter
+    .append("feOffset")
+    .attr("in", "blur")
+    .attr("dx", 2)
+    .attr("dy", 2)
+    .attr("result", "offsetBlur");
+
+  var feMerge = filter.append("feMerge");
+
+  feMerge.append("feMergeNode").attr("in", "offsetBlur");
+  feMerge.append("feMergeNode").attr("in", "SourceGraphic");
+
+  var simpleGradient = defs.append("radialGradient").attr("id", "fake-shadow");
+  simpleGradient
+    .append("stop")
+    .attr("offset", "80%")
+    .attr("stop-color", "#01AFAF");
+  simpleGradient
+    .append("stop")
+    .attr("offset", "100%")
+    .attr("stop-color", "#01AFAF00");
+
   const label = svg
     .append("g")
     .attr("class", "labels")
@@ -131,7 +150,9 @@ export function runForceGraph(container, linksData, nodesData) {
     .enter()
     .append("text")
     .attr("text-anchor", "middle")
-    .attr("dominant-baseline", "central")
+    .attr("dominant-baseline", (d) =>
+      d.isRoot ? "text-before-edge" : "central"
+    )
     .attr("class", (d) => getClass(d))
     .text((d) => {
       return name(d);
