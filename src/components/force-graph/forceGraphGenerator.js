@@ -82,17 +82,26 @@ export function runForceGraph(container, linksData, nodesData) {
     .attr("stroke-width", (d) => Math.sqrt(d.value));
 
   // Declare the nodes
+  const background = svg
+    .append("g")
+    .selectAll("circle")
+    .data(nodes)
+    .enter()
+    .append("circle")
+    .attr("r", (d) => (d.isRoot ? 22 : 14))
+    .style("fill", "#17a2b8")
+    .style("filter", `url(#drop-shadow)`)
+    .call(drag(simulation));
+
   const node = svg
     .append("g")
-    // .attr("stroke", "#fff")
-    // .attr("stroke-width", 2)
     .selectAll("circle")
     .data(nodes)
     .enter()
     .append("circle")
     .attr("r", (d) => (d.isRoot ? 23 : 15))
     .attr("fill", (d) => `url(#${d.id})`)
-    .style("filter", `url(#drop-shadow)`)
+    // .style("filter", `url(#drop-shadow)`)
     .call(drag(simulation));
 
   defs
@@ -127,8 +136,8 @@ export function runForceGraph(container, linksData, nodesData) {
   filter
     .append("feOffset")
     .attr("in", "blur")
-    .attr("dx", 1.5)
-    .attr("dy", 1.5)
+    .attr("dx", 2)
+    .attr("dy", 2)
     .attr("result", "offsetBlur");
 
   var feMerge = filter.append("feMerge");
@@ -186,6 +195,9 @@ export function runForceGraph(container, linksData, nodesData) {
 
     // update node positions
     node.attr("cx", (d) => d.x).attr("cy", (d) => d.y);
+
+    // update node positions
+    background.attr("cx", (d) => d.x).attr("cy", (d) => d.y);
 
     // update label positions
     node
