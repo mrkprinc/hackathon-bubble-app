@@ -6,11 +6,17 @@ import { Button, CustomInput } from "reactstrap";
 import notificationService from "src/services/notifications.service";
 import ConnectionCard from "src/components/connectionCard/connectionCard";
 import styles from "./profile.module.scss";
+import bubbleService from 'src/services/bubble.service';
 
 export default function Profile() {
-  // Our custom hook to get context values
-  //   const { loadingUser, user } = useUser();
+  const { loadingUser, user } = useUser();
   const bubbleData = useBubble();
+
+  const setExternalOrg = (checked: boolean) => {
+    bubbleService.setExternalOrg(user, checked);
+  }
+
+  if (!user) return null
 
   return (
     <>
@@ -24,6 +30,8 @@ export default function Profile() {
               type="switch"
               id="externalOrgSwitch"
               label="I am exposed to an external organization such as school or work."
+              checked={!!user.externalOrg}
+              onChange={(e) => setExternalOrg(e.target.checked)}
             />
           </div>
           <div className={styles.section}>
