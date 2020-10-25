@@ -7,6 +7,8 @@ export interface NetworkNode {
   name: string,
   image: string,
   isRoot?: boolean
+  externalOrg?: boolean
+  extraBubbleMembers?: number
 }
 
 export interface NetworkLink {

@@ -3,7 +3,7 @@ import Login from "src/components/login/login";
 import { useUser } from "src/context/userContext";
 import { useBubble } from "src/context/bubbleContext";
 import { Button, CustomInput, Input, FormText } from "reactstrap";
-import notificationService from "src/services/notifications.service";
+import notificationService, { Notification } from "src/services/notifications.service";
 import ConnectionCard from "src/components/connectionCard/connectionCard";
 import styles from "./profile.module.scss";
 import bubbleService from 'src/services/bubble.service';
@@ -11,6 +11,8 @@ import bubbleService from 'src/services/bubble.service';
 export default function Profile() {
   const { loadingUser, user } = useUser();
   const bubbleData = useBubble();
+
+  if (!user) return null
 
   const setExternalOrg = (checked: boolean) => {
     bubbleService.updateSetting(user, 'externalOrg', checked);
@@ -20,7 +22,11 @@ export default function Profile() {
     bubbleService.updateSetting(user, 'extraBubbleMembers', +num);
   }
 
-  if (!user) return null
+  const notifyUsersInBubble = (notification: Notification) => {
+    const ids = new Set(bubbleData.uniqueIds);
+    ids.delete(user.id);
+    notificationService.sendNotificationToUsers(Array.from(ids), notification)
+  }
 
   return (
     <>
@@ -58,23 +64,13 @@ export default function Profile() {
             </p>
             <Button
               color="warning"
-              onClick={() =>
-                notificationService.sendNotificationToUsers(
-                  Array.from(bubbleData.uniqueIds),
-                  { type: "Possible Exposure Warning" }
-                )
-              }
+              onClick={() => notifyUsersInBubble({ type: "Possible Exposure Warning" })}
             >
               I was possibly exposed to Covid-19.
             </Button>
             <Button
               color="danger"
-              onClick={() =>
-                notificationService.sendNotificationToUsers(
-                  Array.from(bubbleData.uniqueIds),
-                  { type: "Possible Exposure Warning" }
-                )
-              }
+              onClick={() => notifyUsersInBubble({ type: 'Positive Test Warning' })}
             >
               I have tested positive for Covid-19.
             </Button>
