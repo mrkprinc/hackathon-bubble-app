@@ -28,7 +28,11 @@ export default function BubbleContextComp({ children }) {
   const [bubbleData, setBubbleData] = useState(initialData)
 
   const { user } = useUser()
-  const prevConnectedUsers = useRef(new Set<string>())
+  const prevUserData = useRef({
+    connectedUsers: new Set<string>(),
+    externalOrg: false,
+    extraBubbleMembers: 0,
+  })
 
   useEffect(() => {
     if (!user) {
@@ -37,9 +41,18 @@ export default function BubbleContextComp({ children }) {
     }
 
     const updatedConnectedUsers = new Set(user.connectedUsers);
-    if (setsAreEqual(updatedConnectedUsers, prevConnectedUsers.current)) return;
+    if (
+      user.externalOrg === prevUserData.current.externalOrg &&
+      user.extraBubbleMembers === prevUserData.current.extraBubbleMembers &&
+      setsAreEqual(updatedConnectedUsers, prevUserData.current.connectedUsers)
+    ) return;
 
-    prevConnectedUsers.current = updatedConnectedUsers;
+    prevUserData.current = {
+      connectedUsers: updatedConnectedUsers,
+      externalOrg: user.externalOrg,
+      extraBubbleMembers: user.extraBubbleMembers,
+    }
+
     updateBubbleData();
   }, [user]);
 
