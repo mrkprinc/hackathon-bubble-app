@@ -1,5 +1,11 @@
 .container {
-  margin-bottom: 50px;
+  margin: 0 auto 40px auto;
+  min-width: 650px;
+  padding: 0 30px 0 30px;
+  @media (max-width: 660px) {
+    min-width: 0;
+    width: 100%;
+  }
 }
 
 .example {
