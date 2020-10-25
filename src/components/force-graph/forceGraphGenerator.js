@@ -123,8 +123,8 @@ export function runForceGraph(container, linksData, nodesData) {
   filter
     .append("feOffset")
     .attr("in", "blur")
-    .attr("dx", 2)
-    .attr("dy", 2)
+    .attr("dx", 1)
+    .attr("dy", 1)
     .attr("result", "offsetBlur");
 
   var feMerge = filter.append("feMerge");
