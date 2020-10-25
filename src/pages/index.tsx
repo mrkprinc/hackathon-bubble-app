@@ -5,7 +5,6 @@ import BaseLayout from "src/layouts/base-layout";
 import BubbleVisual from "src/components/bubbleVisual/bubbleVisual";
 import Login from "src/components/login/login";
 import BubbleSummary from "src/components/bubble-summary/bubbleSummary";
-import ConnectionCard from "src/components/connectionCard/connectionCard";
 import { useUser } from "src/context/userContext";
 import { useBubble } from "src/context/bubbleContext";
 import { ForceGraph } from "src/components/force-graph";
@@ -29,8 +28,6 @@ export default function Home() {
               }
             />
           ))}
-
-            <ConnectionCard name={user.displayName} mutualConnections={bubbleData.nodes.length} totalConnections={Object.keys(bubbleData.usersData).length} isWorkSchool={true} imageUrl={user.photoURL} />
           <BubbleVisual>
             <ForceGraph
               linksData={bubbleData.edges}

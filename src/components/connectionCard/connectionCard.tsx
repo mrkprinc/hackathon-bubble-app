@@ -7,7 +7,7 @@ import {
 
 interface ConnectionProps {
   name: string
-  imageUrl: string
+  imageUrl?: string
   mutualConnections: number
   totalConnections: number
   isWorkSchool: boolean
@@ -21,7 +21,7 @@ const ConnectionCard: React.FC<ConnectionProps> = ({
     <Container fluid className={'mt-1 mb-1'}>
       <Row>
         <Col xs="auto" sm="auto">
-          <img src={imageUrl} alt="avatar" className="rounded-circle" width="120" height="120" />
+          <img src={imageUrl || 'https://via.placeholder.com/150'} alt="avatar" className="rounded-circle" width="100" height="100" />
         </Col>
         <Col xs="auto" sm="auto">
           <CardTitle>{name}</CardTitle>

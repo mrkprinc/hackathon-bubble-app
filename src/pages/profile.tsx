@@ -4,6 +4,7 @@ import { useUser } from "src/context/userContext";
 import { useBubble } from "src/context/bubbleContext";
 import { Button, CustomInput } from "reactstrap";
 import notificationService from "src/services/notifications.service";
+import ConnectionCard from "src/components/connectionCard/connectionCard";
 import styles from "./profile.module.scss";
 
 export default function Profile() {
@@ -52,6 +53,11 @@ export default function Profile() {
             >
               I have tested positive for Covid-19.
             </Button>
+          </div>
+          <div className={styles.section}>
+            <h6>My Connections</h6>
+            {/* TODO: Add real data */}
+            <ConnectionCard name={"user.displayName"} mutualConnections={4} totalConnections={9} isWorkSchool={true} />
           </div>
         </div>
       </BaseLayout>
