@@ -15,12 +15,12 @@ const MainNav: React.FC = () => {
   });
 
   const toggleNav = () =>
-    setNavStatus({ isNavOpen: !navStatus.isNavOpen, isAddOpen: false });
+    setNavStatus(prev => ({ isNavOpen: !prev.isNavOpen, isAddOpen: false }));
   const toggleAdd = () =>
-    setNavStatus({ isAddOpen: !navStatus.isAddOpen, isNavOpen: false });
+    setNavStatus(prev => ({ isAddOpen: !prev.isAddOpen, isNavOpen: false }));
 
   return (
-    <Navbar expand="md" light fixed="top" className={styles.navBar}>
+    <Navbar light fixed="top" className={styles.navBar}>
       <Nav onClick={toggleNav} className="mr-3">
         <FontAwesomeIcon icon={faBars} />
       </Nav>
@@ -33,7 +33,7 @@ const MainNav: React.FC = () => {
         <FontAwesomeIcon icon={faPlusCircle} />
       </Nav>
 
-      <Collapse navbar isOpen={navStatus.isNavOpen}>
+      <Collapse navbar isOpen={navStatus.isNavOpen} className="pt-2">
         <Link passHref href="/">
           <NavLink active>My Bubble</NavLink>
         </Link>
@@ -43,7 +43,7 @@ const MainNav: React.FC = () => {
         <NavLink onClick={authService.signOut}>Logout</NavLink>
       </Collapse>
 
-      <Collapse navbar isOpen={navStatus.isAddOpen}>
+      <Collapse navbar isOpen={navStatus.isAddOpen} className="pt-2">
         <AddToBubble />
       </Collapse>
     </Navbar>
