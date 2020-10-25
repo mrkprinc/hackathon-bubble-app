@@ -19,12 +19,10 @@ export function runForceGraph(container, linksData, nodesData) {
   };
 
   const extraBubbleMembers = (d) => {
-    console.log("d.externalBUbbleMembers", d.externalBubbleMembers);
     return d.extraBubbleMembers;
   };
 
   const getClass = (d) => {
-    console.log("dd", d);
     return d.isRoot === true ? styles.rootUser : styles.bubbleUser;
   };
 
