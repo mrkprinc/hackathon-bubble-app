@@ -16,6 +16,10 @@ const Alert: React.FC<AlertProps> = ({ notification, dismiss }) => {
       message = `New Connection! ${notification.fromName} has added you to their bubble.`;
       color = 'info';
       break;
+    case 'Removed Connection':
+      message = `Removed Connection! ${notification.fromName} has removed you from their bubble.`;
+      color = 'warning';
+      break;
     case 'Possible Exposure Warning':
       message = 'Someone connected to you says they may have been exposed to Covid-19.';
       color = 'warning';

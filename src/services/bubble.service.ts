@@ -48,7 +48,31 @@ async function addToBubbleByEmail(currentUser: User, email: string) {
   return true;
 }
 
+async function removeFromBubble(currentUser: User, userToRemove: User) {
+  const db = firebase.firestore()
+
+  const userToRemoveRef = await db.collection(Collections.USERS).doc(userToRemove.id)
+  const currentUserRef = db.collection(Collections.USERS).doc(currentUser.id);
+
+  const batch = db.batch();
+  batch.update(currentUserRef, {
+    connectedUsers: firebase.firestore.FieldValue.arrayRemove(userToRemove.id),
+  });
+  batch.update(userToRemoveRef, {
+    connectedUsers: firebase.firestore.FieldValue.arrayRemove(currentUser.id),
+    notifications: firebase.firestore.FieldValue.arrayUnion({
+      type: 'Removed Connection',
+      fromName: currentUser.displayName
+    } as Notification)
+  });
+  await batch.commit();
+  console.log('Removed from bubble:', userToRemove.id);
+
+  return true;
+}
+
 export default {
   getConnectedUsers,
   addToBubbleByEmail,
+  removeFromBubble,
 }

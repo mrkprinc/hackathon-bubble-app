@@ -3,7 +3,7 @@ import Collections from 'src/firebase/collections.enum'
 import { User } from 'src/context/userContext'
 
 export type Notification = {
-  type: 'New Connection' | 'Possible Exposure Warning' | 'Positive Test Warning'
+  type: 'New Connection' | 'Removed Connection' | 'Possible Exposure Warning' | 'Positive Test Warning'
   fromName?: string
 }
 
