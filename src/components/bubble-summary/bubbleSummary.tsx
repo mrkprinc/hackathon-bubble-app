@@ -19,7 +19,7 @@ const BubbleSummary: React.FC<BubbleSummaryProps> = ({ title = '', count = 0, ma
     if(total > 4 && total <= 10){
       return "warning"
     } 
-    return "error"
+    return "danger"
   }
 
   return (
