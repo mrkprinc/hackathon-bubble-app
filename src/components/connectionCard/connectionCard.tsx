@@ -4,38 +4,39 @@ import {
   CardTitle, CardSubtitle,
   Button, Row, Container, Col
 } from 'reactstrap';
+import { useUser } from 'src/context/userContext';
+import bubbleService from "src/services/bubble.service";
 
 interface ConnectionProps {
-  name: string
-  imageUrl?: string
-  mutualConnections: number
-  totalConnections: number
+  connection: any
+  // mutualConnections: number
+  // totalConnections: number
   isWorkSchool: boolean
 }
 
 const ConnectionCard: React.FC<ConnectionProps> = ({
-  name, mutualConnections, totalConnections, isWorkSchool, imageUrl
+  connection, isWorkSchool
 }) => {
-
+  const { user } = useUser();
   return (
     <Container fluid className={'mt-1 mb-1'}>
       <Row>
         <Col xs="auto" sm="auto">
-          <img src={imageUrl || 'https://via.placeholder.com/150'} alt="avatar" className="rounded-circle" width="100" height="100" />
+          <img src={connection.photoURL || 'https://via.placeholder.com/150'} alt="avatar" className="rounded-circle" width="100" height="100" />
         </Col>
         <Col xs="auto" sm="auto">
-          <CardTitle>{name}</CardTitle>
-          <CardSubtitle>
+          <CardTitle>{connection.displayName}</CardTitle>
+          {/* <CardSubtitle>
             Mutual connections <Badge color="info">{mutualConnections}</Badge>
           </CardSubtitle>
           <CardSubtitle>
             Total connections <Badge color="info">{totalConnections}</Badge>
-          </CardSubtitle>
+          </CardSubtitle> */}
           {isWorkSchool && <Badge color="warning">Work/School</Badge>}
         </Col>
         <Col xs={12} sm="auto">
           <div style={{ display: 'flex', flex:1, flexDirection: "row-reverse"}}>
-            <Button color="danger">Delete</Button>
+            <Button color="danger" onClick={() => bubbleService.removeFromBubble(user, connection)}>Delete</Button>
           </div>
         </Col>
       </Row>

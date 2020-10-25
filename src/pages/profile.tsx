@@ -11,6 +11,7 @@ import bubbleService from 'src/services/bubble.service';
 export default function Profile() {
   const { loadingUser, user } = useUser();
   const bubbleData = useBubble();
+  const { user } = useUser();
 
   const setExternalOrg = (checked: boolean) => {
     bubbleService.setExternalOrg(user, checked);
@@ -64,8 +65,9 @@ export default function Profile() {
           </div>
           <div className={styles.section}>
             <h6>My Connections</h6>
-            {/* TODO: Add real data */}
-            <ConnectionCard name={"user.displayName"} mutualConnections={4} totalConnections={9} isWorkSchool={true} />
+            {Object.entries(bubbleData.usersData).map(([_id, userData]) => {
+                return userData.id !== user.id ? <ConnectionCard connection={userData} isWorkSchool={true} /> : null
+            })}
           </div>
         </div>
       </BaseLayout>
