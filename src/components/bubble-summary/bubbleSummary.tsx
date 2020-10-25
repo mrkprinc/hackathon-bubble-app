@@ -11,11 +11,12 @@ interface BubbleSummaryProps {
 }
 
 const BubbleSummary: React.FC<BubbleSummaryProps> = ({ title = '', count = 0, max = 100, extra = 0 }) => {
+  const total = extra + count
   const getCountColor = () => {
-    if(count > 0 && count <= 4){
+    if(total > 0 && total <= 4){
       return "success"
     } 
-    if(count > 4 && count <= 10){
+    if(total > 4 && total <= 10){
       return "warning"
     } 
     return "error"
@@ -27,7 +28,7 @@ const BubbleSummary: React.FC<BubbleSummaryProps> = ({ title = '', count = 0, ma
       <CardBody>
       <Progress multi>
         <Progress bar color={getCountColor()} value={count} max={max}>{count}</Progress>
-        <Progress bar color="info" value={extra} max={max}>{extra}</Progress>
+        <Progress bar color={getCountColor()} style={{opacity: 0.6}} value={extra} max={max}>{extra}</Progress>
       </Progress>
       </CardBody>
     </Card>

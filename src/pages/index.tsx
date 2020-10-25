@@ -8,6 +8,7 @@ import { useUser } from "src/context/userContext";
 import { useBubble } from "src/context/bubbleContext";
 import { ForceGraph } from "src/components/force-graph";
 import notificationService from "src/services/notifications.service"
+import { Badge, Progress } from 'reactstrap';
 
 export default function Home() {
   // Our custom hook to get context values
@@ -45,6 +46,17 @@ export default function Home() {
             max={10}
             extra={bubbleData.totalExtraBubbleMembers}
           />
+          <div className="m-auto">
+            <Badge color="success" className="mr-2">Safe</Badge>
+            <Badge color="warning" className="mr-2">Near Limit</Badge>
+            <Badge color="danger" className="mr-2">Exceed max size</Badge>
+          </div>
+          <div className="m-2">
+            <Progress multi>
+              <Progress bar color="secondary" value={40}>MyBubble users</Progress>
+              <Progress bar color="secondary" style={{opacity: 0.6}} value={30}>Extra Connections</Progress>
+            </Progress>
+          </div>
         </BaseLayout>
       )}
       {loadingUser && <Loading />}
