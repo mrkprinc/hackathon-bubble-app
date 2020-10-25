@@ -11,7 +11,6 @@ import bubbleService from 'src/services/bubble.service';
 export default function Profile() {
   const { loadingUser, user } = useUser();
   const bubbleData = useBubble();
-  const { user } = useUser();
 
   const setExternalOrg = (checked: boolean) => {
     bubbleService.setExternalOrg(user, checked);
