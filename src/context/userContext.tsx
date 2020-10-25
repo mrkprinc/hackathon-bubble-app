@@ -10,8 +10,9 @@ export type User = {
   email: string
   photoURL: string
   createdAt?: firebase.firestore.Timestamp
-  connectedUsers?: string[],
+  connectedUsers?: string[]
   notifications?: Notification[]
+  externalOrg?: boolean
 }
 
 export const UserContext = createContext<{ user: User, [funcs: string]: any }>(null)
@@ -41,6 +42,7 @@ export default function UserContextComp({ children }) {
               photoURL,
               connectedUsers: [],
               notifications: [],
+              externalOrg: false,
               createdAt: nowStamp,
             }
             setUser({ ...initialData, id: uid });

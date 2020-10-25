@@ -71,8 +71,15 @@ async function removeFromBubble(currentUser: User, userToRemove: User) {
   return true;
 }
 
+async function setExternalOrg(user: User, checked: boolean) {
+  return firebase.firestore().collection(Collections.USERS).doc(user.id).update({
+    externalOrg: checked,
+  })
+}
+
 export default {
   getConnectedUsers,
   addToBubbleByEmail,
   removeFromBubble,
+  setExternalOrg,
 }
