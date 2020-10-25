@@ -18,7 +18,13 @@ export function runForceGraph(container, linksData, nodesData) {
     return d.image;
   };
 
+  const extraBubbleMembers = (d) => {
+    console.log("d.externalBUbbleMembers", d.externalBubbleMembers);
+    return d.extraBubbleMembers;
+  };
+
   const getClass = (d) => {
+    console.log("dd", d);
     return d.isRoot === true ? styles.rootUser : styles.bubbleUser;
   };
 
@@ -80,13 +86,13 @@ export function runForceGraph(container, linksData, nodesData) {
   // Declare the nodes
   const node = svg
     .append("g")
-    .attr("stroke", "#fff")
-    .attr("stroke-width", 2)
+    // .attr("stroke", "#fff")
+    // .attr("stroke-width", 2)
     .selectAll("circle")
     .data(nodes)
     .enter()
     .append("circle")
-    .attr("r", (d) => (d.isRoot ? 25 : 15))
+    .attr("r", (d) => (d.isRoot ? 23 : 15))
     .attr("fill", (d) => `url(#${d.id})`)
     .style("filter", `url(#drop-shadow)`)
     .call(drag(simulation));
@@ -106,7 +112,7 @@ export function runForceGraph(container, linksData, nodesData) {
     .attr("width", 1)
     .attr("preserveAspectRatio", "none")
     .attr("xmlns:xlink", "http://www.w3.org/1999/xlink")
-    .attr("xlink:href", (d) => d.image);
+    .attr("xlink:href", (d) => image(d));
 
   var filter = defs
     .append("filter")
@@ -123,24 +129,14 @@ export function runForceGraph(container, linksData, nodesData) {
   filter
     .append("feOffset")
     .attr("in", "blur")
-    .attr("dx", 1)
-    .attr("dy", 1)
+    .attr("dx", 1.5)
+    .attr("dy", 1.5)
     .attr("result", "offsetBlur");
 
   var feMerge = filter.append("feMerge");
 
   feMerge.append("feMergeNode").attr("in", "offsetBlur");
   feMerge.append("feMergeNode").attr("in", "SourceGraphic");
-
-  var simpleGradient = defs.append("radialGradient").attr("id", "fake-shadow");
-  simpleGradient
-    .append("stop")
-    .attr("offset", "80%")
-    .attr("stop-color", "#01AFAF");
-  simpleGradient
-    .append("stop")
-    .attr("offset", "100%")
-    .attr("stop-color", "#01AFAF00");
 
   const label = svg
     .append("g")
@@ -157,6 +153,30 @@ export function runForceGraph(container, linksData, nodesData) {
     .text((d) => {
       return name(d);
     });
+
+  const externalOrgImage = svg
+    .append("g")
+    .selectAll("circle")
+    .data(nodes)
+    .enter()
+    .append("image")
+    .attr("xlink:href", (d) => (d.externalOrg ? "/briefcase.png" : ""))
+    .attr("x", (d) => (d.isRoot ? "-25px" : "0px"))
+    .attr("y", (d) => (d.isRoot ? "-44px" : "100px"))
+    .join("circle")
+    .attr("width", "13px")
+    .attr("height", "13px")
+    .call(drag(simulation));
+
+  const extBubMembersNumber = svg
+    .append("g")
+    .selectAll("circle")
+    .data(nodes)
+    .enter()
+    .append("text")
+    .attr("text-anchor", "start")
+    .attr("class", styles.extraBubbleNumber)
+    .text((d) => (extraBubbleMembers(d) ? `+${extraBubbleMembers(d)}` : ""));
 
   simulation.on("tick", () => {
     //update link positions
@@ -178,6 +198,15 @@ export function runForceGraph(container, linksData, nodesData) {
         return d.y - imageSize / 2;
       });
 
+    // externalOrgImage
+    externalOrgImage
+      .attr("x", (d) => {
+        return d.isRoot ? d.x + 28 : d.x + 20;
+      })
+      .attr("y", (d) => {
+        return d.isRoot ? d.y - 15 : d.y - 17;
+      });
+
     // update label positions
     label
       .attr("x", (d) => {
@@ -185,6 +214,16 @@ export function runForceGraph(container, linksData, nodesData) {
       })
       .attr("y", (d) => {
         return d.y + imageSize / 2;
+      });
+
+    // update extBubMembersNumber positions
+    extBubMembersNumber
+      .attr("x", (d) => {
+        return d.isRoot ? d.x + 28 : d.x + 18;
+        // return d.x + 10;
+      })
+      .attr("y", (d) => {
+        return d.isRoot ? d.y + imageSize / 2 - 15 : d.y + imageSize / 2 - 18;
       });
   });
 
