@@ -1,5 +1,3 @@
-import Head from "next/head";
-import { useEffect } from "react";
 import Alert from "src/components/alert/alert";
 import BaseLayout from "src/layouts/base-layout";
 import BubbleVisual from "src/components/bubbleVisual/bubbleVisual";
@@ -8,7 +6,7 @@ import BubbleSummary from "src/components/bubble-summary/bubbleSummary";
 import { useUser } from "src/context/userContext";
 import { useBubble } from "src/context/bubbleContext";
 import { ForceGraph } from "src/components/force-graph";
-import notificationService from "src/services/notifications.service";
+import notificationService from "src/services/notifications.service"
 
 export default function Home() {
   // Our custom hook to get context values
