@@ -55,11 +55,13 @@ export default function BubbleContextComp({ children }) {
         connectedUser.connectedUsers?.forEach(uniqueIds.add, uniqueIds);
       });
 
-      const nodes: NetworkNode[] = Array.from(uniqueIds).map((id) => ({
+      const nodes = Array.from(uniqueIds).map((id): NetworkNode => ({
         id,
         name: usersData[id]?.displayName,
         image: usersData[id]?.photoURL ?? '/avatar_placeholder.jpg',
         isRoot: id === user.id,
+        externalOrg: !!usersData[id]?.externalOrg,
+        extraBubbleMembers: usersData[id]?.extraBubbleMembers ?? 0
       }))
 
       const edges: NetworkLink[] = []
