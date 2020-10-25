@@ -18,12 +18,12 @@ const ConnectionCard: React.FC<ConnectionProps> = ({
 }) => {
 
   return (
-    <Container fluid >
+    <Container fluid className={'mt-1 mb-1'}>
       <Row>
-        <Col xs={'auto'}>
+        <Col xs="auto" sm="auto">
           <img src={imageUrl} alt="avatar" className="rounded-circle" width="120" height="120" />
         </Col>
-        <Col xs={'auto'}>
+        <Col xs="auto" sm="auto">
           <CardTitle>{name}</CardTitle>
           <CardSubtitle>
             Mutual connections <Badge color="info">{mutualConnections}</Badge>
@@ -33,10 +33,12 @@ const ConnectionCard: React.FC<ConnectionProps> = ({
           </CardSubtitle>
           {isWorkSchool && <Badge color="warning">Work/School</Badge>}
         </Col>
+        <Col xs={12} sm="auto">
+          <div style={{ display: 'flex', flex:1, flexDirection: "row-reverse"}}>
+            <Button color="danger">Delete</Button>
+          </div>
+        </Col>
       </Row>
-      <div style={{ display: 'flex', flex:1, flexDirection: "row-reverse"}}>
-        <Button color="danger">Delete</Button>
-      </div>
     </Container>
   );
 };
