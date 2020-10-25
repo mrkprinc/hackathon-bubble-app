@@ -2,7 +2,7 @@ import BaseLayout from "src/layouts/base-layout";
 import Login from "src/components/login/login";
 import { useUser } from "src/context/userContext";
 import { useBubble } from "src/context/bubbleContext";
-import { Button, CustomInput } from "reactstrap";
+import { Button, CustomInput, Input, FormText } from "reactstrap";
 import notificationService from "src/services/notifications.service";
 import ConnectionCard from "src/components/connectionCard/connectionCard";
 import styles from "./profile.module.scss";
@@ -13,7 +13,11 @@ export default function Profile() {
   const bubbleData = useBubble();
 
   const setExternalOrg = (checked: boolean) => {
-    bubbleService.setExternalOrg(user, checked);
+    bubbleService.updateSetting(user, 'externalOrg', checked);
+  }
+
+  const setExtraBubbleMembers = (num: number) => {
+    bubbleService.updateSetting(user, 'extraBubbleMembers', +num);
   }
 
   if (!user) return null
@@ -25,6 +29,18 @@ export default function Profile() {
           <h4>Profile</h4>
 
           <div className={styles.section}>
+            <h6>Extra Bubble Members</h6>
+            <Input
+              type="number"
+              min={0}
+              value={user.extraBubbleMembers || 0}
+              onChange={(e) => setExtraBubbleMembers(e.target.value)}
+              className="w-auto d-inline-block"
+            />
+            <FormText>How many people without an account are in your bubble?</FormText>
+          </div>
+
+          <div className={styles.section}>
             <h6>External Organizations</h6>
             <CustomInput
               type="switch"
@@ -34,6 +50,7 @@ export default function Profile() {
               onChange={(e) => setExternalOrg(e.target.checked)}
             />
           </div>
+  
           <div className={styles.section}>
             <h6>Covid-19 Exposure </h6>
             <p>
@@ -65,8 +82,7 @@ export default function Profile() {
           <div className={styles.section}>
             <h6>My Connections</h6>
             {Object.entries(bubbleData.usersData).map(([_id, userData]) => {
-              console.log('userData', userData)
-                return userData.id !== user.id ? <ConnectionCard connection={userData} /> : null
+              return userData.id !== user.id ? <ConnectionCard key={userData.id} connection={userData} /> : null
             })}
           </div>
         </div>
