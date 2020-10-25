@@ -88,6 +88,7 @@ export default function Profile() {
                 onClick={() =>
                   notifyUsersInBubble({ type: "Possible Exposure Warning" })
                 }
+                className="mr-2 mb-2"
               >
                 I was possibly exposed to Covid-19.
               </Button>
@@ -96,6 +97,7 @@ export default function Profile() {
                 onClick={() =>
                   notifyUsersInBubble({ type: "Positive Test Warning" })
                 }
+                className="mr-2 mb-2"
               >
                 I have tested positive for Covid-19.
               </Button>
