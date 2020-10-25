@@ -10,6 +10,13 @@ body {
   box-sizing: border-box;
 }
 
+a {
+  color: #17a2b8;
+  &:hover {
+    color: #138496;
+  }
+}
+
 // Overwriting bootstrap ---------------------------------------------
 .alert {
   margin-bottom: 0;

@@ -23,7 +23,7 @@ const AddToBubble: React.FC<AddToBubbleProps> = ({ children }) => {
           onClick={() => bubbleService.addToBubbleByEmail(user, emailInput)}
           color="info"
         >
-          Add to Bubble
+          Add to your Bubble
         </Button>
       </InputGroup>
     </div>

@@ -6,7 +6,7 @@ type LoadingProps = {};
 
 const Loading: React.FC<LoadingProps> = () => (
   <div className={styles.container}>
-    <Card className={styles.card}>Loading ...</Card>
+    <div className={styles.card}>Loading your bubble...</div>
   </div>
 );
 
