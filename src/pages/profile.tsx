@@ -15,8 +15,6 @@ export default function Profile() {
   const { loadingUser, user } = useUser();
   const bubbleData = useBubble();
 
-  if (!user) return null;
-
   const calcMutualConnections = (
     userConnections: Array<string>,
     connectedUserConnections: Array<string>
