@@ -1,3 +1,4 @@
+import Link from "next/link";
 import { Navbar, NavbarBrand, NavLink, Collapse, Nav } from "reactstrap";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faBars, faPlusCircle } from "@fortawesome/free-solid-svg-icons";
@@ -24,7 +25,7 @@ const MainNav: React.FC = () => {
         <FontAwesomeIcon icon={faBars} />
       </Nav>
       <NavbarBrand className={styles.navBrand} href="/">
-        MY BUBBLE
+        MYBUBBLE
       </NavbarBrand>
 
       <Nav onClick={toggleAdd}>
@@ -32,9 +33,13 @@ const MainNav: React.FC = () => {
       </Nav>
 
       <Collapse navbar isOpen={navStatus.isNavOpen}>
-        <NavLink onClick={authService.signOut} role="button">
-          Logout
-        </NavLink>
+        <Link passHref href="/">
+          <NavLink active>My Bubble</NavLink>
+        </Link>
+        <Link passHref href="/profile">
+          <NavLink active>Profile</NavLink>
+        </Link>
+        <NavLink onClick={authService.signOut}>Logout</NavLink>
       </Collapse>
 
       <Collapse navbar isOpen={navStatus.isAddOpen}>
