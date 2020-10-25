@@ -1,4 +1,4 @@
-import { useState, useEffect, createContext, useContext, useCallback, useRef } from 'react'
+import { useState, useEffect, createContext, useContext, useRef } from 'react'
 import bubbleService from 'src/services/bubble.service'
 import { User, useUser } from './userContext'
 import { NetworkNode, NetworkLink } from 'src/components/force-graph'
@@ -8,6 +8,7 @@ export type BubbleData = {
     [id: string]: User
   },
   uniqueIds: Set<string>,
+  totalExtraBubbleMembers: number
   refresh: () => void,
   nodes: NetworkNode[],
   edges: NetworkLink[],
@@ -16,6 +17,7 @@ export type BubbleData = {
 const initialData = {
   usersData: {} as { [id: string]: User },
   uniqueIds: new Set<string>(),
+  totalExtraBubbleMembers: 0,
   nodes: [],
   edges: []
 }
@@ -44,14 +46,17 @@ export default function BubbleContextComp({ children }) {
   function updateBubbleData() {
     const usersData: { [id: string]: User } = {};
     const uniqueIds = new Set<string>();
+    let totalExtraBubbleMembers = 0
 
     uniqueIds.add(user.id);
     usersData[user.id] = user;
+    totalExtraBubbleMembers += user.extraBubbleMembers ?? 0;
     user.connectedUsers?.forEach(uniqueIds.add, uniqueIds);
     
     bubbleService.getConnectedUsers(user).then(connectedUsers => {
       connectedUsers.forEach((connectedUser) => {
         usersData[connectedUser.id] = connectedUser;
+        totalExtraBubbleMembers += connectedUser.extraBubbleMembers ?? 0
         connectedUser.connectedUsers?.forEach(uniqueIds.add, uniqueIds);
       });
 
@@ -71,7 +76,7 @@ export default function BubbleContextComp({ children }) {
         })
       })
 
-      const updatedBubbleData = { usersData, uniqueIds, nodes, edges }
+      const updatedBubbleData = { usersData, uniqueIds, totalExtraBubbleMembers, nodes, edges }
       console.log('Updated bubble data:', updatedBubbleData)
       setBubbleData(updatedBubbleData);
     })
