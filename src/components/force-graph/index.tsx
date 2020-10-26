@@ -27,7 +27,7 @@ export const ForceGraph: React.FC<ForceGraphProps> = ({ linksData, nodesData }) 
   useEffect(() => {
     let destroyFn
 
-    if (containerRef.current && linksData.length && nodesData.length) {
+    if (containerRef.current && nodesData.length) {
       const { destroy } = runForceGraph(containerRef.current, linksData, nodesData)
       destroyFn = destroy
     }
